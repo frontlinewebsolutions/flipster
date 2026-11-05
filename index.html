@@ -1,0 +1,1717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Flipster prototype. A measured secondhand clothing store: fit profile, shape from the hem, local reference check.">
+<title>Flipster</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Figtree:wght@300..900&display=swap">
+<style>
+/* ============================================================
+   FLIPSTER DESIGN SYSTEM v3
+   Soft candy on white. Periwinkle leads, bubblegum accents only.
+   Everything on this page is computed from local data. No model calls.
+   ============================================================ */
+:root{
+  color-scheme:light;
+  --paper:#ffffff; --card:#ffffff; --sunk:#f5f4fa; --line:#e9e7f2; --line-2:#dbd8ea;
+  --ink:#241f33; --ink-2:#635c78; --ink-3:#9a93ad;
+  --grape:#6c5ce7; --grape-2:#8d7cf5; --grape-ink:#5a4bd4; --grape-soft:#efecfd;
+  --bubble:#ff6fa8; --bubble-2:#ff92bf; --bubble-soft:#ffe8f1;
+  --sky:#45a9ed; --sky-soft:#e3f2fd;
+  --mint:#0f9b70; --mint-soft:#dcf5eb;
+  --butter:#b07d0c; --butter-soft:#fff0cf;
+  --quiet:#9c93af; --quiet-soft:#f4efe8;
+  --t-tee:#ffe4ef; --t-shirt:#e1f1fd; --t-knit:#ece8ff; --t-jacket:#dcf5eb;
+  --t-coat:#fff0cf; --t-dress:#ffe6da; --t-jeans:#e1ebfd; --t-trousers:#e9f5da;
+  --t-skirt:#fde7f4;
+  --e1:0 1px 2px rgba(36,31,51,.06), 0 6px 18px -10px rgba(36,31,51,.22);
+  --e2:0 2px 6px rgba(36,31,51,.09), 0 20px 42px -20px rgba(36,31,51,.3);
+  --e3:0 4px 10px rgba(36,31,51,.08), 0 30px 60px -24px rgba(36,31,51,.38);
+  --puff:inset 0 1.5px 0 rgba(255,255,255,.45), 0 6px 16px -6px rgba(108,92,231,.55);
+  --puff-pink:inset 0 1.5px 0 rgba(255,255,255,.5), 0 6px 16px -6px rgba(255,111,168,.6);
+  --display:"Fredoka",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,sans-serif;
+  --r-lg:30px; --r-md:22px; --r-sm:16px;
+}
+/* Deliberately light only. Jordan asked for a white site, so there is no dark
+   variant and color-scheme is pinned above: the page stays white whatever the
+   viewer's OS theme is set to. */
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);margin:0;font-size:15px;
+  line-height:1.58;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-weight:450}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:40;background:var(--paper)}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+/* Deliberately faint. The top of the page was doing too much. */
+.blobs i{position:absolute;display:block;border-radius:50%;filter:blur(100px);opacity:.2}
+.blobs i:nth-child(1){width:440px;height:440px;top:-210px;right:-130px;background:var(--bubble-soft)}
+.blobs i:nth-child(2){width:380px;height:380px;top:220px;left:-200px;background:var(--grape-soft)}
+.blobs i:nth-child(3){display:none}
+.wrap{max-width:1200px;margin:0 auto;
+  padding-left:max(18px,env(safe-area-inset-left,0px));
+  padding-right:max(18px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance;font-family:var(--display);font-weight:600;
+  letter-spacing:-.02em;line-height:1.1}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--line)}
+@supports not (backdrop-filter:blur(1px)){header{background:var(--paper)}}
+.hbar{display:flex;align-items:center;gap:11px;padding-block:13px;position:relative}
+.logo{display:flex;align-items:center;gap:7px;min-width:0}
+.logomark{width:26px;height:26px;flex:none;display:block}
+.word{font-family:var(--display);font-size:27px;font-weight:600;letter-spacing:-.035em;
+  line-height:1;background:linear-gradient(170deg,var(--grape-2),var(--grape));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.spacer{margin-left:auto}
+.pill{display:inline-flex;align-items:center;gap:7px;background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:12.5px;
+  font-weight:650;color:var(--ink-2);box-shadow:var(--e1);white-space:nowrap}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--bubble);flex:none;
+  box-shadow:0 0 0 3px var(--bubble-soft)}
+.pill b{color:var(--ink);font-weight:750}
+.iconbtn{appearance:none;width:42px;height:42px;flex:none;border-radius:14px;border:0;
+  background:var(--card);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;
+  box-shadow:var(--e1);transition:background .15s,color .15s}
+.iconbtn:hover{background:var(--grape-soft);color:var(--grape-ink)}
+.iconbtn[aria-expanded="true"]{background:var(--grape-soft);color:var(--grape-ink)}
+.iconbtn:focus-visible{outline:2.5px solid var(--grape);outline-offset:2px}
+.avatar{appearance:none;width:42px;height:42px;flex:none;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(170deg,var(--grape-2),var(--grape));color:#fff;font-family:var(--body);
+  font-size:14px;font-weight:800;letter-spacing:.01em;box-shadow:var(--puff);
+  transition:transform .15s}
+.avatar:hover{transform:translateY(-1px)}
+.avatar:focus-visible{outline:2.5px solid var(--grape);outline-offset:3px}
+.cartwrap{position:relative;flex:none;display:block}
+.badge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;border-radius:999px;
+  background:var(--bubble);color:#fff;font-size:10.5px;font-weight:800;display:grid;
+  place-items:center;padding:0 5px;box-shadow:0 0 0 2.5px var(--paper);
+  font-variant-numeric:tabular-nums;pointer-events:none}
+.badge[hidden]{display:none}
+
+/* ---------- cart ---------- */
+.cart-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px}
+.cart-row:hover{background:var(--sunk)}
+.cart-thumb{width:40px;height:40px;border-radius:12px;background:var(--sunk);flex:none;
+  display:grid;place-items:center;overflow:hidden;padding:2px}
+.cart-thumb svg{width:100%;height:100%;display:block}
+.cart-info{min-width:0;flex:1}
+.cart-info b{display:block;font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;letter-spacing:-.01em}
+.cart-info span{display:block;font-size:11px;color:var(--ink-3);font-weight:650;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-price{font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;flex:none}
+.cart-x{appearance:none;border:0;background:none;color:var(--ink-3);cursor:pointer;
+  font-size:17px;line-height:1;padding:2px 3px;flex:none;font-family:var(--body)}
+.cart-x:hover{color:var(--bubble)}
+.cart-sum{display:flex;justify-content:space-between;align-items:baseline;
+  padding:13px 10px 10px;border-top:1px solid var(--line);margin-top:6px}
+.cart-sum span{font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.cart-sum b{font-size:19px;font-weight:700;font-family:var(--display);
+  font-variant-numeric:tabular-nums}
+.cart-empty{padding:28px 12px;text-align:center;color:var(--ink-3);font-size:13px;font-weight:650}
+.cart-go{width:100%;justify-content:center;margin-top:2px}
+.addbtn{appearance:none;margin-left:auto;border:0;border-radius:999px;padding:7px 14px;
+  font-family:var(--body);font-size:11.5px;font-weight:800;cursor:pointer;
+  background:var(--grape-soft);color:var(--grape-ink);transition:background .14s,color .14s}
+.addbtn:hover{background:var(--grape);color:#fff}
+.addbtn.in{background:var(--mint-soft);color:var(--mint)}
+.addbtn:focus-visible{outline:2px solid var(--grape);outline-offset:2px}
+
+/* ---------- popovers ---------- */
+.pop{position:absolute;top:calc(100% + 8px);background:var(--card);border:1px solid var(--line);
+  border-radius:24px;box-shadow:var(--e3);padding:12px;width:280px;z-index:50}
+.pop.left{left:0}
+.pop.right{right:0}
+.pop[hidden]{display:none}
+.pop-head{display:flex;align-items:center;gap:11px;padding:8px 10px 14px;
+  border-bottom:1px solid var(--line);margin-bottom:8px}
+.pop-head .av{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:linear-gradient(170deg,var(--grape-2),var(--grape));color:#fff;font-weight:800;
+  font-size:14px}
+.pop-head .who{min-width:0}
+.pop-head b{display:block;font-size:14px;font-weight:800;letter-spacing:-.01em}
+.pop-head span{display:block;font-size:12px;color:var(--ink-3);font-weight:600;
+  overflow:hidden;text-overflow:ellipsis}
+.pop-group{font-size:10.5px;font-weight:800;color:var(--ink-3);letter-spacing:.06em;
+  text-transform:uppercase;padding:10px 12px 5px}
+.pop-item{display:flex;align-items:center;gap:11px;width:100%;appearance:none;background:none;
+  border:0;border-radius:14px;padding:10px 12px;font-family:var(--body);font-size:13.5px;
+  font-weight:650;color:var(--ink);cursor:pointer;text-align:left;transition:background .13s}
+.pop-item:hover{background:var(--sunk)}
+.pop-item .gi{width:26px;height:26px;border-radius:9px;flex:none;display:grid;place-items:center;
+  font-size:13px;background:var(--grape-soft);color:var(--grape-ink)}
+.pop-item .tail{margin-left:auto;font-size:11.5px;font-weight:750;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.pop-item.danger{color:var(--bubble)}
+.pop-item.danger .gi{background:var(--bubble-soft);color:var(--bubble)}
+.pop-sep{height:1px;background:var(--line);margin:8px 4px}
+.pop-note{font-size:11.5px;color:var(--ink-3);font-weight:600;padding:4px 12px 8px;line-height:1.5}
+.tgl{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:14px;cursor:pointer}
+.tgl:hover{background:var(--sunk)}
+.tgl span{font-size:13.5px;font-weight:650;flex:1;min-width:0}
+.tgl input{appearance:none;width:40px;height:23px;border-radius:999px;background:var(--line-2);
+  position:relative;flex:none;cursor:pointer;transition:background .18s;margin:0}
+.tgl input::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .18s}
+.tgl input:checked{background:var(--grape)}
+.tgl input:checked::after{transform:translateX(17px)}
+.tgl input:focus-visible{outline:2.5px solid var(--grape);outline-offset:2px}
+
+/* ---------- hero ---------- */
+.hero{padding-block:46px 10px;text-align:center}
+.hero h1{font-size:clamp(28px,6.2vw,56px);line-height:1.04;letter-spacing:-.035em;
+  max-width:15em;margin-inline:auto}
+.pop-c{background:linear-gradient(170deg,var(--bubble-2),var(--bubble));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--ink-2);max-width:52ch;margin:18px auto 0;font-size:16.5px}
+.proto-note{font-size:12px;color:var(--ink-3);font-weight:650;margin-top:12px}
+.dropline{display:none;font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:12px}
+.dropline b{color:var(--bubble);font-variant-numeric:tabular-nums}
+
+/* three quiet promises under the search, then straight to the stock */
+.reassure{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:34px auto 0;
+  max-width:820px}
+.rea{display:flex;align-items:center;gap:11px;text-align:left}
+.rea .ri{width:36px;height:36px;border-radius:12px;flex:none;display:grid;place-items:center;
+  font-size:15px}
+.rea b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+.rea span{display:block;font-size:12px;color:var(--ink-3);font-weight:650;line-height:1.35}
+.advanced{display:flex;flex-direction:column;gap:15px}
+.advanced[hidden]{display:none}
+
+/* ---------- search ---------- */
+.searchwrap{max-width:720px;margin:30px auto 0;text-align:center}
+.searchbar{display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1.5px solid var(--line-2);border-radius:999px;padding:8px 8px 8px 20px;
+  box-shadow:var(--e2);transition:border-color .16s,box-shadow .16s}
+.searchbar:focus-within{border-color:var(--grape);box-shadow:var(--e3)}
+.searchbar .sp{flex:none;display:grid;place-items:center;color:var(--grape)}
+.searchbar input{flex:1;min-width:0;appearance:none;border:0;background:none;outline:none;
+  font-family:var(--body);font-size:16px;font-weight:600;color:var(--ink);padding:12px 0}
+.searchbar input::placeholder{color:var(--ink-3);font-weight:550}
+.qbadge{display:inline-flex;align-items:center;gap:6px;background:var(--grape-soft);
+  color:var(--grape-ink);border-radius:999px;padding:5px 13px;font-size:11.5px;font-weight:800;
+  margin-bottom:13px}
+.qhint{font-size:13px;color:var(--ink-3);font-weight:600;margin-top:13px}
+.qchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:13px}
+.qchip{background:var(--grape-soft);color:var(--grape-ink);border-radius:999px;padding:6px 13px;
+  font-size:12px;font-weight:750}
+.qchip.pinkk{background:var(--bubble-soft);color:var(--bubble)}
+.qclear{appearance:none;border:0;background:none;color:var(--ink-3);font-family:var(--body);
+  font-size:12px;font-weight:750;cursor:pointer;text-decoration:underline;padding:6px}
+
+/* ---------- controls ---------- */
+.controls{display:flex;flex-direction:column;gap:15px;margin-top:34px}
+.ctl-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.ctl-label{font-size:12px;font-weight:750;color:var(--ink-3)}
+.seg{display:inline-flex;gap:3px;background:var(--sunk);border:1px solid var(--line);
+  border-radius:999px;padding:4px;min-width:0}
+.seg button{appearance:none;background:none;border:0;border-radius:999px;font-family:var(--body);
+  font-size:13px;font-weight:700;color:var(--ink-2);padding:8px 16px;cursor:pointer;
+  white-space:nowrap;transition:background .15s,color .15s,box-shadow .15s}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--grape-ink);box-shadow:var(--e1)}
+.seg button:focus-visible{outline:2px solid var(--grape);outline-offset:2px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.chipbtn{appearance:none;font-family:var(--body);font-size:12.5px;font-weight:700;cursor:pointer;
+  border-radius:999px;padding:7px 14px;border:1px solid var(--line-2);background:var(--card);
+  color:var(--ink-2);transition:all .15s}
+.chipbtn[aria-pressed="true"]{background:var(--grape-soft);border-color:transparent;
+  color:var(--grape-ink)}
+.chipbtn:focus-visible{outline:2px solid var(--grape);outline-offset:2px}
+
+/* ---------- buttons ---------- */
+.btn{appearance:none;font-family:var(--body);font-size:14.5px;font-weight:750;cursor:pointer;
+  padding:13px 26px;border:0;border-radius:999px;color:#fff;
+  background:linear-gradient(180deg,var(--grape-2),var(--grape));box-shadow:var(--puff);
+  transition:transform .15s,box-shadow .15s;letter-spacing:-.005em;white-space:nowrap}
+.btn:hover{transform:translateY(-2px);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45),
+  0 12px 26px -8px rgba(108,92,231,.65)}
+.btn.pink{background:linear-gradient(180deg,var(--bubble-2),var(--bubble));box-shadow:var(--puff-pink)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line-2);
+  box-shadow:var(--e1)}
+.btn.sm{padding:11px 20px;font-size:13.5px}
+.btn:focus-visible{outline:3px solid var(--grape);outline-offset:3px}
+
+/* ---------- profile + callout ---------- */
+.prof{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:17px 22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;box-shadow:var(--e1);
+  justify-content:center}
+.prof .pf{display:flex;flex-direction:column;gap:1px;min-width:0;padding-right:16px;
+  border-right:1px solid var(--line);text-align:left}
+.prof .pf:last-child{border-right:0;padding-right:0}
+.prof .pf span{font-size:11px;font-weight:750;color:var(--ink-3)}
+.prof .pf b{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;
+  font-family:var(--display)}
+.prof .lead b{color:var(--bubble)}
+.prof .est b{color:var(--butter)}
+.callout{background:var(--grape-soft);border-radius:var(--r-md);padding:17px 21px;
+  font-size:14.5px;line-height:1.62;text-align:center;max-width:860px;margin-inline:auto}
+.callout b{font-weight:800;color:var(--grape-ink);font-variant-numeric:tabular-nums}
+
+/* ---------- grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(244px,1fr));gap:18px;
+  margin:28px 0 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:17px;
+  display:flex;flex-direction:column;gap:11px;min-width:0;box-shadow:var(--e1);
+  transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--e2)}
+.card.dim{opacity:.58}
+.schem{border-radius:var(--r-md);background:var(--sunk);padding:10px;position:relative}
+.schem svg{width:100%;height:auto;display:block}
+.sil{position:absolute;left:12px;top:12px;background:var(--card);border-radius:999px;
+  padding:4px 11px;font-size:10.5px;font-weight:800;color:var(--ink-2);box-shadow:var(--e1)}
+.lastc{position:absolute;right:12px;top:12px;background:var(--bubble);color:#fff;
+  border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:800;box-shadow:var(--e1)}
+.brandline{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.brand{font-size:15px;font-weight:800;letter-spacing:-.015em;min-width:0;overflow-wrap:break-word}
+.price{font-size:14px;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums;
+  color:var(--ink-2)}
+.desc{font-size:13px;color:var(--ink-2);margin:-7px 0 0}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.meta i{font-style:normal;background:var(--sunk);border-radius:999px;padding:4px 10px;
+  font-size:11px;font-weight:700;color:var(--ink-2)}
+.dims{display:flex;gap:9px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-3);font-weight:650;
+  font-variant-numeric:tabular-nums}
+.refline{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700}
+.refline.ok{color:var(--mint)}
+.refline.flag{color:var(--butter)}
+.refline.none{color:var(--ink-3)}
+.refline .rd{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+.verdict{display:flex;align-items:center;gap:9px;margin-top:auto;padding-top:12px;
+  border-top:1px solid var(--line);flex-wrap:wrap}
+.chip{border-radius:999px;padding:6px 12px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.chip.yes{background:var(--mint-soft);color:var(--mint)}
+.chip.maybe{background:var(--butter-soft);color:var(--butter)}
+.chip.no{background:var(--quiet-soft);color:var(--quiet)}
+.why{color:var(--ink-2);min-width:0;font-size:12.5px;font-weight:600}
+.empty{grid-column:1/-1;background:var(--card);border:2px dashed var(--line-2);
+  border-radius:var(--r-lg);padding:40px;text-align:center;color:var(--ink-2)}
+
+/* ---------- bands and collage ---------- */
+section.band{margin-top:72px;text-align:center}
+.band h2{font-size:clamp(26px,4.8vw,42px);letter-spacing:-.03em}
+.band .lede{color:var(--ink-2);max-width:56ch;margin:14px auto 0;font-size:16.5px}
+.collage{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.crow{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:36px;padding:34px 40px;
+  box-shadow:var(--e1);text-align:left}
+.crow:nth-child(even) .cimg{order:2}
+.cimg{border-radius:26px;background:var(--sunk);padding:18px;display:grid;place-items:center}
+.cimg svg{width:100%;height:auto;display:block}
+.ctext .cq{display:block;font-size:14.5px;color:var(--ink-2);font-style:italic;font-weight:550;
+  margin-bottom:12px;padding-left:14px;border-left:3px solid var(--bubble)}
+.ctext h3{font-size:clamp(20px,2.6vw,26px);letter-spacing:-.025em;margin-bottom:9px}
+.ctext p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.62}
+.cstep{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+  border-radius:50%;background:var(--grape-soft);color:var(--grape-ink);font-size:12px;
+  font-weight:800;margin-bottom:12px;font-variant-numeric:tabular-nums}
+
+/* ---------- listing check ---------- */
+.check{background:var(--card);border:1px solid var(--line);border-radius:36px;padding:28px;
+  box-shadow:var(--e1);margin:28px auto 0;display:grid;gap:20px;max-width:900px;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);text-align:left}
+.check .ck-in{display:flex;flex-direction:column;gap:14px}
+.ck-out{background:var(--sunk);border-radius:var(--r-md);padding:20px;display:flex;
+  flex-direction:column;gap:11px;justify-content:center}
+.ck-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.ck-row span{color:var(--ink-2);font-weight:600}
+.ck-row b{font-weight:800;font-variant-numeric:tabular-nums}
+.ck-note{font-size:13px;color:var(--ink-2);line-height:1.55;padding-top:11px;
+  border-top:1px solid var(--line)}
+.ck-verdict{border-radius:var(--r-sm);padding:13px 16px;font-size:13.5px;font-weight:700;
+  line-height:1.5}
+.ck-verdict.ok{background:var(--mint-soft);color:var(--mint)}
+.ck-verdict.flag{background:var(--butter-soft);color:var(--butter)}
+
+/* ---------- fields ---------- */
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:12.5px;font-weight:750;color:var(--ink-2)}
+.field .hint{font-size:11.5px;color:var(--ink-3);font-weight:600}
+.field input,.field select{font-family:var(--body);font-size:16px;font-weight:650;padding:12px 15px;
+  border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--sunk);color:var(--ink);
+  width:100%;appearance:none;font-variant-numeric:tabular-nums}
+.field input:focus,.field select:focus{outline:2.5px solid var(--grape);outline-offset:-1px;
+  background:var(--card)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+
+/* ---------- dialog ---------- */
+dialog.panel{border:0;background:var(--card);color:var(--ink);padding:0;border-radius:32px;
+  max-width:480px;width:calc(100% - 26px);margin:auto;box-shadow:var(--e3)}
+dialog.panel::backdrop{background:rgba(36,31,51,.5);backdrop-filter:blur(4px)}
+.panel-in{padding:26px;text-align:left}
+.panel h2{font-size:30px;letter-spacing:-.03em}
+.panel p.sub{color:var(--ink-2);font-size:14px;margin:10px 0 20px}
+.tabs{display:flex;gap:3px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;
+  padding:4px;margin-bottom:19px}
+.tabs button{flex:1;appearance:none;background:none;border:0;border-radius:999px;
+  font-family:var(--body);font-size:12px;font-weight:750;color:var(--ink-2);padding:10px 4px;
+  cursor:pointer;min-width:0}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--grape-ink);box-shadow:var(--e1)}
+.tabs button:focus-visible{outline:2px solid var(--grape);outline-offset:-2px}
+.howto{background:var(--bubble-soft);border-radius:var(--r-md);padding:14px 17px;font-size:13px;
+  color:var(--ink);margin-bottom:17px;line-height:1.55}
+.howto b{font-weight:800}
+.panel .field{margin-bottom:14px}
+.panel-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+footer{margin-top:64px;padding-block:30px 48px;border-top:1px solid var(--line);font-size:13px;
+  color:var(--ink-2);line-height:1.66;text-align:left}
+footer p{margin:0 0 11px;max-width:76ch}
+footer b{color:var(--ink);font-weight:750}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .card:hover,.btn:hover,.avatar:hover{transform:none}}
+@media (max-width:860px){.check{grid-template-columns:1fr}}
+
+/* ---------- phone: everything centred, nothing cramped ---------- */
+@media (max-width:780px){
+  .crow{grid-template-columns:1fr;gap:22px;padding:26px 22px;border-radius:30px;
+    text-align:center}
+  .crow:nth-child(even) .cimg{order:0}
+  .cimg{max-width:420px;margin-inline:auto;width:100%}
+  .ctext .cq{border-left:0;padding-left:0;padding-top:0}
+  .reassure{gap:18px;flex-direction:column;align-items:center}
+  .rea{width:min(300px,100%)}
+  .check{padding:24px 20px;border-radius:30px}
+}
+@media (max-width:560px){
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));
+    padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .word{font-size:23px}.logomark{width:23px;height:23px}
+  .hbar{gap:8px;padding-block:11px}
+  .hbar .pill{display:none}
+  #setBtn{display:none}
+  .iconbtn,.avatar{width:38px;height:38px;border-radius:12px}
+  .avatar{border-radius:50%}
+  .dropline{display:block}
+  .hero{padding-block:30px 6px}
+  .hero p{font-size:15.5px;margin-top:14px}
+  .searchwrap{margin-top:24px}
+  .searchbar{padding:6px 6px 6px 16px}
+  .searchbar input{font-size:16px;padding:11px 0}
+  #qgo{display:none}
+  .qhint{font-size:12.5px}
+  .controls{margin-top:28px}
+  section.band{margin-top:52px}
+  .collage{gap:14px}
+  .ctext h3{font-size:21px}
+  .ctext p{font-size:14px}
+  .prof{padding:15px 16px;gap:12px}
+  .prof .pf{border-right:0;padding-right:0;min-width:44%;text-align:center;align-items:center}
+  .callout{padding:15px 17px;font-size:13.5px}
+  .pop{width:min(300px,calc(100vw - 32px))}
+  #cartPop{width:min(316px,calc(100vw - 32px))!important}
+  .panel-in{padding:22px}
+  .panel h2{font-size:26px}
+  .tabs button{font-size:11px;padding:9px 3px}
+}
+@media (max-width:440px){
+  .grid{grid-template-columns:1fr;gap:14px}
+  .two{grid-template-columns:1fr}
+  .card{padding:15px;border-radius:26px}
+}
+</style>
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header>
+  <div class="wrap hbar">
+    <button class="iconbtn" id="navBtn" aria-expanded="false" aria-label="Menu">
+      <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+        stroke-width="2.1" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h10"/></svg>
+    </button>
+
+    <div class="logo">
+      <!-- A swing tag with ruler graduations on its face. Retail plus measurement,
+           the two things the business actually is. Sized to the wordmark, tucked
+           tight against the f. Hangers belong to Recycle Boutique. -->
+      <svg class="logomark" viewBox="0 0 32 32" fill="none" aria-label="Flipster">
+        <defs>
+          <linearGradient id="tg" x1="4" y1="4" x2="30" y2="28" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#9c8dff"/><stop offset="1" stop-color="#5f41dc"/>
+          </linearGradient>
+        </defs>
+        <path d="M14,4 L27,4 Q31,4 31,8 L31,24 Q31,28 27,28 L14,28 Q12.3,28 11.1,26.8
+          L3.6,19.3 Q2,17.7 2,16 Q2,14.3 3.6,12.7 L11.1,5.2 Q12.3,4 14,4 Z" fill="url(#tg)"/>
+        <circle cx="9.7" cy="16" r="2.7" fill="#fff"/>
+        <g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".92">
+          <line x1="17.6" y1="11.6" x2="17.6" y2="16.6"/>
+          <line x1="21.8" y1="11.6" x2="21.8" y2="19.4"/>
+          <line x1="26" y1="11.6" x2="26" y2="16.6"/>
+        </g>
+      </svg>
+      <div class="word">flipster</div>
+    </div>
+
+    <span class="pill spacer"><span class="dot"></span>Next drop <b id="cd">&nbsp;</b></span>
+
+    <button class="iconbtn" id="setBtn" aria-expanded="false" aria-label="Settings">
+      <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+        stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="10" r="2.9"/>
+        <path d="M10 1.6v2M10 16.4v2M16.9 10h-2M5.1 10h-2M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4
+          M14.9 14.9l-1.4-1.4M6.5 6.5L5.1 5.1"/></svg>
+    </button>
+    <span class="cartwrap">
+      <button class="iconbtn" id="cartBtn" aria-expanded="false" aria-label="Cart">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+          stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1.8 2.2h2.3l2 9.4h8.9l1.9-6.9H5.1"/>
+          <circle cx="7.4" cy="16.2" r="1.5"/><circle cx="14.2" cy="16.2" r="1.5"/></svg>
+      </button>
+      <span class="badge" id="cartBadge" hidden>0</span>
+    </span>
+    <button class="avatar" id="accBtn" aria-expanded="false" aria-label="Account">JC</button>
+
+    <!-- hamburger panel -->
+    <div class="pop left" id="navPop" hidden>
+      <div class="pop-group">Browse</div>
+      <button class="pop-item"><span class="gi">&#9733;</span>Tonight&rsquo;s drop
+        <span class="tail">60</span></button>
+      <button class="pop-item"><span class="gi">&#8634;</span>Past drops
+        <span class="tail">13</span></button>
+      <button class="pop-item"><span class="gi">&#9825;</span>Saved pieces
+        <span class="tail">7</span></button>
+      <div class="pop-sep"></div>
+      <div class="pop-group">You</div>
+      <button class="pop-item"><span class="gi">&#8645;</span>Your flips
+        <span class="tail">24</span></button>
+      <button class="pop-item"><span class="gi">&#8986;</span>History
+        <span class="tail">112</span></button>
+      <button class="pop-item"><span class="gi">&#8596;</span>Your fit profile</button>
+      <button class="pop-item"><span class="gi">$</span>Payouts
+        <span class="tail">$482</span></button>
+      <div class="pop-sep"></div>
+      <div class="pop-group">Technical</div>
+      <button class="pop-item"><span class="gi">&#8942;</span>Measurement guide</button>
+      <button class="pop-item"><span class="gi">&#9636;</span>Reference library
+        <span class="tail">25</span></button>
+      <button class="pop-item" id="navCheck"><span class="gi">&#10003;</span>Listing checker</button>
+      <button class="pop-item"><span class="gi">&#8644;</span>Size chart conversions</button>
+      <button class="pop-item"><span class="gi">&lt;/&gt;</span>Seller API</button>
+      <div class="pop-note">Mockup navigation. Only the listing checker is wired up.</div>
+    </div>
+
+    <!-- settings panel -->
+    <div class="pop right" id="setPop" hidden>
+      <div class="pop-group">Browsing</div>
+      <label class="tgl"><span>Only show pieces that fit me</span>
+        <input type="checkbox" id="optFit" checked></label>
+      <label class="tgl"><span>Hide pieces with no reference</span>
+        <input type="checkbox" id="optRef"></label>
+      <div class="pop-sep"></div>
+      <div class="pop-group">Notifications</div>
+      <label class="tgl"><span>Email me when the drop opens</span>
+        <input type="checkbox" checked></label>
+      <label class="tgl"><span>Tell me when my size lands</span>
+        <input type="checkbox" checked></label>
+      <div class="pop-note">The two browsing toggles are live. The rest are mockup.</div>
+    </div>
+
+    <!-- cart panel -->
+    <div class="pop right" id="cartPop" hidden style="width:316px">
+      <div class="pop-group">Your cart</div>
+      <div id="cartBody"></div>
+    </div>
+
+    <!-- account panel -->
+    <div class="pop right" id="accPop" hidden>
+      <div class="pop-head">
+        <div class="av">JC</div>
+        <div class="who"><b>Jordan Carruthers</b><span>jordan@flipster.nz</span></div>
+      </div>
+      <div class="pop-group">Your fit</div>
+      <button class="pop-item" id="accFit"><span class="gi">&#8596;</span>
+        <span id="accFitText">54 / 44 / 76 cm</span>
+        <span class="tail">Edit</span></button>
+      <div class="pop-sep"></div>
+      <button class="pop-item"><span class="gi">&#9782;</span>Orders
+        <span class="tail">9</span></button>
+      <button class="pop-item"><span class="gi">&#8645;</span>Your flips
+        <span class="tail">24</span></button>
+      <button class="pop-item"><span class="gi">$</span>Payouts
+        <span class="tail">$482</span></button>
+      <button class="pop-item"><span class="gi">&#9881;</span>Account settings</button>
+      <div class="pop-sep"></div>
+      <button class="pop-item danger"><span class="gi">&#8617;</span>Sign out</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <h1><span class="num" id="headTotal">60</span> new pieces in store.
+      <span class="pop-c" id="headGood"></span></h1>
+    <p>Every piece is measured flat before it goes live, including the hem, so you know the size
+      and the shape before you buy.</p>
+    <div class="dropline">Next drop in <b id="cd2">&nbsp;</b></div>
+    <div class="proto-note">Prototype, sample stock</div>
+  </section>
+
+  <section class="searchwrap">
+    <span class="qbadge">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 0l1.7 4.6L14.3 6.3 9.7 8 8 12.6 6.3 8 1.7 6.3 6.3 4.6z"/>
+        <path d="M13.2 10.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z" opacity=".65"/>
+      </svg>
+      AI will help you find it
+    </span>
+    <div class="searchbar">
+      <span class="sp">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+          stroke-width="2.1" stroke-linecap="round"><circle cx="8.6" cy="8.6" r="5.9"/>
+          <path d="M12.9 12.9L17.4 17.4"/></svg>
+      </span>
+      <input id="q" type="search" autocomplete="off"
+        placeholder="Describe it: vintage Levi's that fit me under $120">
+      <button class="btn sm" id="qgo">Search</button>
+    </div>
+    <div class="qhint" id="qhint">Say it how you would out loud. Brand, shape, price, or just
+      &ldquo;something that fits me&rdquo;.</div>
+    <div class="qchips" id="qchips"></div>
+  </section>
+
+  <section class="reassure">
+    <div class="rea">
+      <span class="ri" style="background:var(--grape-soft);color:var(--grape-ink)">&#8596;</span>
+      <div><b>Measured flat</b><span>Every piece, in centimetres</span></div>
+    </div>
+    <div class="rea">
+      <span class="ri" style="background:var(--bubble-soft);color:var(--bubble)">&#9733;</span>
+      <div><b>One of one</b><span>When it is gone, it is gone</span></div>
+    </div>
+    <div class="rea">
+      <span class="ri" style="background:var(--mint-soft);color:var(--mint)">&#8634;</span>
+      <div><b>Never stale</b><span>Delisted after six months</span></div>
+    </div>
+  </section>
+
+  <section class="controls">
+    <div class="ctl-row">
+      <div class="seg" role="group" aria-label="What to show">
+        <button id="sFit" aria-pressed="true">Fits you</button>
+        <button id="sClose" aria-pressed="false">+ Close</button>
+        <button id="sAll" aria-pressed="false">Everything</button>
+      </div>
+      <button class="btn ghost sm" id="filtBtn" aria-expanded="false">Filters</button>
+      <span class="pill" id="count"></span>
+    </div>
+
+    <!-- Everything dense lives behind one button, so the top of the page stays calm. -->
+    <div class="advanced" id="adv" hidden>
+      <div class="ctl-row">
+        <span class="ctl-label">Compare</span>
+        <div class="seg" role="group" aria-label="Filter mode">
+          <button id="mFit" aria-pressed="true">Measurements</button>
+          <button id="mLabel" aria-pressed="false">Label size</button>
+        </div>
+        <button class="btn ghost sm" id="editFit2">Edit my fit</button>
+      </div>
+      <div class="ctl-row">
+        <span class="ctl-label">Shape</span>
+        <div class="chips" id="silChips" role="group" aria-label="Silhouette"></div>
+      </div>
+      <div class="prof" id="prof"></div>
+      <div class="callout" id="callout"></div>
+    </div>
+  </section>
+
+  <div class="grid" id="grid"></div>
+
+  <section class="band" id="why">
+    <h2>Built from what people told us</h2>
+    <p class="lede">Every one of these came from someone who quit the other apps. Each has a
+      mechanism behind it, not a promise.</p>
+
+    <div class="collage" style="margin-top:34px">
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <g opacity=".35">
+              <rect x="14" y="16" width="86" height="34" rx="12" fill="#d9d5e4"/>
+              <rect x="14" y="58" width="86" height="34" rx="12" fill="#d9d5e4" opacity=".8"/>
+              <rect x="14" y="100" width="86" height="34" rx="12" fill="#d9d5e4" opacity=".6"/>
+              <rect x="14" y="142" width="86" height="34" rx="12" fill="#d9d5e4" opacity=".4"/>
+              <rect x="14" y="184" width="86" height="34" rx="12" fill="#d9d5e4" opacity=".2"/>
+            </g>
+            <text x="57" y="212" text-anchor="middle" fill="#9a93ad" font-family="Figtree"
+              font-size="11" font-weight="800">endless</text>
+            <rect x="140" y="16" width="166" height="36" rx="13" fill="var(--t-tee)"/>
+            <rect x="140" y="60" width="166" height="36" rx="13" fill="var(--t-shirt)"/>
+            <rect x="140" y="104" width="166" height="36" rx="13" fill="var(--t-jacket)"/>
+            <rect x="140" y="148" width="166" height="36" rx="13" fill="var(--t-knit)"/>
+            <g stroke="var(--bubble)" stroke-width="3" stroke-linecap="round">
+              <path d="M140 200h166"/>
+            </g>
+            <text x="223" y="216" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
+              font-size="11" font-weight="800">that is the whole drop</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">1</span>
+          <span class="cq">&ldquo;You scroll for hours.&rdquo;</span>
+          <h3>A drop, not a feed</h3>
+          <p>Sixty pieces on Sunday, then it closes. You can finish it in ten minutes. The cap is
+            also what stops us lowering the bar to grow, which is how every other marketplace
+            ends up full of junk.</p>
+        </div>
+      </div>
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <path d="M34 72h104v112a10 10 0 0 1-10 10H44a10 10 0 0 1-10-10z" fill="var(--sunk)"
+              stroke="var(--line-2)" stroke-width="2"/>
+            <path d="M26 72l14-30h92l14 30z" fill="var(--t-shirt)" stroke="var(--sky)"
+              stroke-width="2" stroke-linejoin="round"/>
+            <rect x="52" y="96" width="30" height="34" rx="7" fill="#fff" stroke="var(--line-2)"
+              stroke-width="2"/>
+            <rect x="94" y="96" width="30" height="66" rx="7" fill="#fff" stroke="var(--line-2)"
+              stroke-width="2"/>
+            <text x="86" y="212" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11.5" font-weight="800">new, down the road</text>
+            <g stroke="var(--line-2)" stroke-width="3" stroke-linecap="round">
+              <path d="M166 112h38"/><path d="M190 100l14 12-14 12"/>
+            </g>
+            <circle cx="258" cy="112" r="40" fill="var(--bubble-soft)"/>
+            <g stroke="var(--bubble)" stroke-width="4.5" stroke-linecap="round">
+              <path d="M244 98l28 28"/><path d="M272 98l-28 28"/>
+            </g>
+            <text x="258" y="212" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
+              font-size="11.5" font-weight="800">not in the drop</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">2</span>
+          <span class="cq">&ldquo;So much Shein and Cotton On.&rdquo;</span>
+          <h3>The walk-down-the-road rule</h3>
+          <p>If you could buy it new nearby for a similar price, it does not come in. That is not
+            a brand blacklist, it is a test any seller can apply to their own pile without being
+            told what is good taste.</p>
+        </div>
+      </div>
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <path d="M74 44 C74 54 118 54 118 44 L134 49 C148 54 161 66 168 78 C170 83 157 98
+              152 98 C148 98 141 89 139 85 L139 182 C139 187 135 190 130 190 L62 190
+              C57 190 53 187 53 182 L53 85 C51 89 44 98 40 98 C35 98 22 83 24 78
+              C31 66 44 54 58 49 Z" fill="var(--t-tee)" stroke="var(--ink-2)" stroke-width="2.6"
+              stroke-linejoin="round"/>
+            <g stroke="var(--grape)" stroke-width="2.8" stroke-linecap="round">
+              <path d="M58 112h76"/><path d="M58 105v14"/><path d="M134 105v14"/>
+            </g>
+            <rect x="74" y="100" width="44" height="24" rx="12" fill="#fff"
+              stroke="var(--grape)" stroke-width="2"/>
+            <text x="96" y="117" text-anchor="middle" fill="var(--grape-ink)" font-family="Figtree"
+              font-size="14" font-weight="800">55</text>
+            <g opacity=".5">
+              <path d="M214 58h62a10 10 0 0 1 10 10v44a10 10 0 0 1-10 10h-62l-20-32z"
+                fill="#fff" stroke="var(--line-2)" stroke-width="2.4" stroke-linejoin="round"/>
+              <circle cx="212" cy="90" r="4.5" fill="var(--line-2)"/>
+              <text x="246" y="99" text-anchor="middle" fill="var(--ink-3)" font-family="Fredoka"
+                font-size="26" font-weight="600">L</text>
+            </g>
+            <g stroke="var(--bubble)" stroke-width="4" stroke-linecap="round">
+              <path d="M198 128l94-72"/>
+            </g>
+            <text x="245" y="166" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11.5" font-weight="800">a brand&rsquo;s opinion</text>
+            <text x="96" y="212" text-anchor="middle" fill="var(--grape-ink)" font-family="Figtree"
+              font-size="11.5" font-weight="800">a fact in centimetres</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">3</span>
+          <span class="cq">&ldquo;Sizing.&rdquo;</span>
+          <h3>Measured, never labelled</h3>
+          <p>Flat measurements in centimetres on every piece, scored against your saved fit
+            profile. A size 16 from 1975 is close to a modern 10. The label is a brand's opinion.
+            The tape is not.</p>
+        </div>
+      </div>
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <path d="M44 34 C44 42 82 42 82 34 L94 38 C104 42 112 50 117 58 C119 62 110 72 106 72
+              C103 72 98 65 97 62 L95 78 L104 168 C105 174 101 178 95 178 L31 178
+              C25 178 21 174 22 168 L31 78 L29 62 C28 65 23 72 20 72 C16 72 7 62 9 58
+              C14 50 22 42 32 38 Z" fill="var(--t-dress)" stroke="var(--ink-2)" stroke-width="2.4"
+              stroke-linejoin="round"/>
+            <g stroke="var(--grape)" stroke-width="2.4" stroke-linecap="round">
+              <path d="M30 86h66"/></g>
+            <rect x="42" y="76" width="42" height="21" rx="10.5" fill="#fff"
+              stroke="var(--grape)" stroke-width="1.8"/>
+            <text x="63" y="91" text-anchor="middle" fill="var(--grape-ink)" font-family="Figtree"
+              font-size="12" font-weight="800">46</text>
+            <g stroke="var(--bubble)" stroke-width="2.4" stroke-linecap="round">
+              <path d="M22 190h82"/><path d="M22 185v10"/><path d="M104 185v10"/></g>
+            <rect x="42" y="180" width="42" height="21" rx="10.5" fill="#fff"
+              stroke="var(--bubble)" stroke-width="1.8"/>
+            <text x="63" y="195" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
+              font-size="12" font-weight="800">52</text>
+            <text x="63" y="216" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11" font-weight="800">straight</text>
+
+            <path d="M206 34 C206 42 244 42 244 34 L256 38 C266 42 274 50 279 58 C281 62 272 72
+              268 72 C265 72 260 65 259 62 L257 78 L300 168 C302 174 298 178 292 178 L158 178
+              C152 178 148 174 150 168 L193 78 L191 62 C190 65 185 72 182 72 C178 72 169 62 171 58
+              C176 50 184 42 194 38 Z" fill="var(--t-dress)" stroke="var(--ink-2)"
+              stroke-width="2.4" stroke-linejoin="round"/>
+            <g stroke="var(--grape)" stroke-width="2.4" stroke-linecap="round">
+              <path d="M192 86h66"/></g>
+            <rect x="204" y="76" width="42" height="21" rx="10.5" fill="#fff"
+              stroke="var(--grape)" stroke-width="1.8"/>
+            <text x="225" y="91" text-anchor="middle" fill="var(--grape-ink)" font-family="Figtree"
+              font-size="12" font-weight="800">46</text>
+            <g stroke="var(--bubble)" stroke-width="2.4" stroke-linecap="round">
+              <path d="M150 190h150"/><path d="M150 185v10"/><path d="M300 185v10"/></g>
+            <rect x="204" y="180" width="42" height="21" rx="10.5" fill="#fff"
+              stroke="var(--bubble)" stroke-width="1.8"/>
+            <text x="225" y="195" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
+              font-size="12" font-weight="800">110</text>
+            <text x="225" y="216" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11" font-weight="800">full</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">4</span>
+          <span class="cq">&ldquo;Girls shape dresses on the floor to fake the fit.&rdquo;</span>
+          <h3>The hem gives it away</h3>
+          <p>Same waist, opposite garment. We measure the hem as well, so the shape badge comes
+            from a ratio instead of a photo. You can arrange a dress however you like on your
+            lounge floor, the numbers still say what it is.</p>
+        </div>
+      </div>
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <g opacity=".45">
+              <path d="M22 44h108a12 12 0 0 1 12 12v50a12 12 0 0 1-12 12H62l-22 20v-20h-18
+                a12 12 0 0 1-12-12V56a12 12 0 0 1 12-12z" fill="var(--sunk)"
+                stroke="var(--line-2)" stroke-width="2.4"/>
+              <g fill="var(--ink-3)">
+                <circle cx="58" cy="81" r="5.5"/><circle cx="78" cy="81" r="5.5"/>
+                <circle cx="98" cy="81" r="5.5"/>
+              </g>
+            </g>
+            <text x="80" y="176" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="12" font-weight="800">asked 3 weeks ago</text>
+            <text x="80" y="198" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11" font-weight="700">still waiting</text>
+            <rect x="176" y="28" width="128" height="164" rx="22" fill="#fff"
+              stroke="var(--line-2)" stroke-width="2.4"/>
+            <rect x="192" y="44" width="96" height="38" rx="12" fill="var(--t-dress)"/>
+            <g>
+              <circle cx="202" cy="104" r="8" fill="var(--mint-soft)"/>
+              <path d="M198.6 104l2.6 2.8 4.4-5" stroke="var(--mint)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="218" y="99" width="68" height="10" rx="5" fill="var(--sunk)"/>
+              <circle cx="202" cy="128" r="8" fill="var(--mint-soft)"/>
+              <path d="M198.6 128l2.6 2.8 4.4-5" stroke="var(--mint)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="218" y="123" width="52" height="10" rx="5" fill="var(--sunk)"/>
+              <circle cx="202" cy="152" r="8" fill="var(--mint-soft)"/>
+              <path d="M198.6 152l2.6 2.8 4.4-5" stroke="var(--mint)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="218" y="147" width="60" height="10" rx="5" fill="var(--sunk)"/>
+              <circle cx="202" cy="176" r="8" fill="var(--mint-soft)"/>
+              <path d="M198.6 176l2.6 2.8 4.4-5" stroke="var(--mint)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="218" y="171" width="44" height="10" rx="5" fill="var(--sunk)"/>
+            </g>
+            <text x="240" y="212" text-anchor="middle" fill="var(--mint)" font-family="Figtree"
+              font-size="11.5" font-weight="800">already on the listing</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">5</span>
+          <span class="cq">&ldquo;Sellers reply in weeks, or never.&rdquo;</span>
+          <h3>Nothing left to ask</h3>
+          <p>Measurements, shape, condition and flaws are on the listing, the price is fixed and
+            stock is one of one. Almost every message sent on the other apps only exists because
+            the listing was incomplete. Complete the listing and the message disappears.</p>
+        </div>
+      </div>
+
+      <div class="crow">
+        <div class="cimg">
+          <svg viewBox="0 0 320 220" fill="none" aria-hidden="true">
+            <rect x="24" y="22" width="118" height="104" rx="22" fill="var(--t-coat)"
+              stroke="var(--line-2)" stroke-width="2"/>
+            <rect x="46" y="44" width="74" height="60" rx="16" fill="#fff" opacity=".75"/>
+            <g>
+              <circle cx="38" cy="150" r="8" fill="var(--grape)"/>
+              <circle cx="60" cy="150" r="8" fill="var(--grape)" opacity=".8"/>
+              <circle cx="82" cy="150" r="8" fill="var(--grape)" opacity=".6"/>
+              <circle cx="104" cy="150" r="8" fill="var(--grape)" opacity=".45"/>
+              <circle cx="126" cy="150" r="8" fill="var(--grape)" opacity=".3"/>
+              <circle cx="148" cy="150" r="8.5" fill="var(--bubble)"/>
+            </g>
+            <text x="93" y="182" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11.5" font-weight="800">six months, unsold</text>
+            <path d="M160 74 C196 56 212 70 226 92" stroke="var(--bubble)" stroke-width="2.6"
+              stroke-linecap="round" stroke-dasharray="1 7"/>
+            <path d="M219 78 L227 93 L211 95" stroke="var(--bubble)" stroke-width="2.6"
+              stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M206 104h84a8 8 0 0 1 8 8v44a10 10 0 0 1-10 10h-80a10 10 0 0 1-10-10v-44
+              a8 8 0 0 1 8-8z" fill="var(--sunk)" stroke="var(--line-2)" stroke-width="2.4"/>
+            <rect x="214" y="118" width="68" height="9" rx="4.5" fill="var(--line-2)" opacity=".7"/>
+            <rect x="214" y="134" width="46" height="9" rx="4.5" fill="var(--line-2)" opacity=".5"/>
+            <text x="248" y="186" text-anchor="middle" fill="var(--ink-3)" font-family="Figtree"
+              font-size="11.5" font-weight="800">back to drafts</text>
+          </svg>
+        </div>
+        <div class="ctext">
+          <span class="cstep">6</span>
+          <span class="cq">Stock nobody wants sits on the other apps for years.</span>
+          <h3>Nothing goes stale</h3>
+          <p>Six months unsold and a piece delists itself, straight back to the seller's drafts.
+            They can relist it, drop the price, or admit it belongs somewhere else. You get a
+            warning badge for the last four weeks, so a thing you have been watching never just
+            vanishes on you.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="band" id="checker">
+    <h2>How a listing gets checked</h2>
+    <p class="lede">Sellers do not start from a blank form. We match the piece against a local
+      reference of known styles, pre-fill what it should measure, and flag anything that
+      disagrees. Pick a piece and type a measurement to watch it run.</p>
+    <div class="check">
+      <div class="ck-in">
+        <div class="field">
+          <label for="ckItem">Piece being listed</label>
+          <select id="ckItem"></select>
+        </div>
+        <div class="field">
+          <label for="ckVal" id="ckValLabel">Seller measures</label>
+          <input class="num" type="number" id="ckVal" step="0.5" inputmode="decimal">
+          <span class="hint">Try a number a few cm off and watch it flag</span>
+        </div>
+      </div>
+      <div class="ck-out" id="ckOut"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>What this is.</b> A working prototype. The <span id="footTotal">60</span> garments are
+      sample stock with realistic flat measurements. Every fit verdict, shape badge, reference
+      check, search result and count on this page is computed live from that data, not written
+      by hand.</p>
+    <p><b>It runs on arithmetic.</b> No model is called at any point, including the search. Fit
+      is a comparison of centimetres against tolerances, shape is a hem-to-waist ratio, search is
+      a local parser over the stock, and the listing check is a lookup against a reference table.
+      The whole thing costs nothing per view.</p>
+    <p><b>Mockup.</b> The account, menus and notification settings are a shell to show where
+      things live. Sellers named here are placeholders, not real businesses.</p>
+  </footer>
+</div>
+
+<dialog class="panel" id="panel">
+  <form class="panel-in" method="dialog" id="fitForm">
+    <h2 id="panelTitle">Set your fit</h2>
+    <p class="sub" id="panelSub">Three ways in. Measuring something you already own is the most
+      accurate, and you never need a tape around yourself.</p>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tGarment" aria-selected="true">Measure a favourite</button>
+      <button type="button" role="tab" id="tBrand" aria-selected="false">Brand and size</button>
+      <button type="button" role="tab" id="tBody" aria-selected="false">My measurements</button>
+    </div>
+
+    <div id="paneGarment">
+      <div class="howto"><b>Lay it flat and smooth it out.</b> Straight across from under one
+        armhole to the other for pit to pit, and across the waistband for the waist. Do up
+        buttons and zips first. Centimetres.</div>
+      <div class="two">
+        <div class="field"><label for="gPtp">Pit to pit</label>
+          <input class="num" type="number" id="gPtp" min="30" max="90" step="0.5" inputmode="decimal">
+          <span class="hint">From a top that fits you well</span></div>
+        <div class="field"><label for="gWaist">Flat waist</label>
+          <input class="num" type="number" id="gWaist" min="25" max="80" step="0.5" inputmode="decimal">
+          <span class="hint">From jeans you love</span></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="gInseam">Inseam</label>
+          <input class="num" type="number" id="gInseam" min="50" max="100" step="0.5" inputmode="decimal">
+          <span class="hint">Crotch seam to hem</span></div>
+        <div class="field"><label for="gLabel">Size you usually buy</label>
+          <select id="gLabel">
+            <option>8</option><option>10</option><option>12</option><option>14</option>
+            <option selected>16</option><option>18</option><option>20</option>
+          </select>
+          <span class="hint">Only used by the label filter</span></div>
+      </div>
+    </div>
+
+    <div id="paneBrand" hidden>
+      <div class="howto"><b>Name something you know fits.</b> We convert it from a stored size
+        chart. Less accurate than measuring, much faster.</div>
+      <div class="field"><label for="bBrand">Brand and size</label>
+        <select id="bBrand"></select></div>
+    </div>
+
+    <div id="paneBody" hidden>
+      <div class="howto"><b>Body measurements, not garment.</b> Measure around the fullest part.
+        We halve it and add the right ease for each garment type.</div>
+      <div class="two">
+        <div class="field"><label for="yBust">Bust around</label>
+          <input class="num" type="number" id="yBust" min="70" max="160" step="1" inputmode="decimal"></div>
+        <div class="field"><label for="yWaist">Waist around</label>
+          <input class="num" type="number" id="yWaist" min="55" max="150" step="1" inputmode="decimal"></div>
+      </div>
+    </div>
+
+    <div class="panel-acts">
+      <button class="btn" type="button" id="saveFit">Save and filter the drop</button>
+      <button class="btn ghost" type="button" id="closeFit">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* ============================================================
+   DATA. b brand, n name, t type, l label size, ptp pit to pit,
+   w flat waist, ins inseam, h hem (hem width, or leg opening),
+   len length, c condition /5, p price, s seller, v vintage,
+   wk weeks listed (absent means fresh this week).
+   All centimetres, all measured flat. Note w is the WAIST, wk is WEEKS.
+   ============================================================ */
+var ITEMS=[
+ {b:"Kowtow",n:"Organic cotton boxy tee",t:"tee",l:"16",ptp:55,len:66,c:4,p:68,s:"Nine Lives"},
+ {b:"Zambesi",n:"Oversized linen shirt",t:"shirt",l:"18",ptp:58,len:70,c:4,p:145,s:"The Fold",v:1},
+ {b:"Karen Walker",n:"Wool crew knit",t:"knit",l:"L",ptp:57,len:64,c:4,p:135,s:"Kept"},
+ {b:"Levi's",n:"501 straight, mid wash",t:"jeans",l:"32",w:43,ins:74,h:19,c:3,p:95,s:"Tin Shed",v:1},
+ {b:"Juliette Hogan",n:"Silk midi dress",t:"dress",l:"16",ptp:55,w:46,h:52,len:98,c:5,p:240,s:"Sunday Best"},
+ {b:"Maggie Marilyn",n:"Relaxed wool blazer",t:"jacket",l:"14",ptp:56,len:68,c:4,p:280,s:"The Fold"},
+ {b:"Nom*d",n:"Felted wool coat",t:"coat",l:"M",ptp:60,len:90,c:3,p:190,s:"Kept"},
+ {b:"Workshop",n:"Wide leg trouser",t:"trousers",l:"16",w:45,ins:78,h:26,c:4,p:110,s:"Second Act"},
+ {b:"Penny Sage",n:"Linen tiered dress",t:"dress",l:"18",ptp:57,w:48,h:96,len:104,c:5,p:195,s:"The Fold"},
+ {b:"Country Road",n:"Boxy wool blazer",t:"jacket",l:"20",ptp:58,len:70,c:3,p:120,s:"Tin Shed",v:1,wk:24},
+ {b:"Caitlin Crisp",n:"Cotton poplin shirt",t:"shirt",l:"16",ptp:53,len:60,c:5,p:130,s:"Sunday Best"},
+ {b:"Ruby",n:"Wool A-line skirt",t:"skirt",l:"16",w:45,h:72,len:66,c:4,p:115,s:"Sunday Best"},
+ {b:"Laura Ashley",n:"Prairie cotton dress",t:"dress",l:"18",ptp:53,w:44,h:110,len:112,c:3,p:90,s:"Tin Shed",v:1,wk:23},
+ {b:"Standard Issue",n:"Merino longline cardigan",t:"knit",l:"XL",ptp:63,len:70,c:4,p:95,s:"Kept"},
+ {b:"Ruby",n:"Silk button blouse",t:"shirt",l:"14",ptp:52,len:62,c:5,p:120,s:"Sunday Best"},
+ {b:"Standard Issue",n:"Merino crew",t:"knit",l:"S",ptp:50,len:60,c:4,p:85,s:"Kept"},
+ {b:"Twenty-seven Names",n:"Pleated midi skirt",t:"skirt",l:"14",w:42,h:90,len:60,c:4,p:95,s:"Sunday Best"},
+ {b:"Issey Miyake",n:"Pleats Please top",t:"tee",l:"One size",ptp:62,len:64,c:4,p:320,s:"Tin Shed"},
+ {b:"Kate Sylvester",n:"Cotton shirt",t:"shirt",l:"12",ptp:51,len:64,c:4,p:105,s:"Nine Lives"},
+ {b:"Harman Grubiša",n:"Draped crepe dress",t:"dress",l:"14",ptp:52,w:43,h:50,len:96,c:5,p:220,s:"The Fold"},
+ {b:"Nike",n:"Nylon windbreaker",t:"jacket",l:"XL",ptp:68,len:72,c:3,p:85,s:"Second Act",v:1,wk:25},
+ {b:"Levi's",n:"550 relaxed, light wash",t:"jeans",l:"34",w:47.5,ins:76,h:21,c:3,p:80,s:"Tin Shed",v:1,wk:15},
+ {b:"Salasai",n:"Cropped twill jacket",t:"jacket",l:"12",ptp:53,len:66,c:4,p:160,s:"Kept"},
+ {b:"Trelise Cooper",n:"Printed silk dress",t:"dress",l:"20",ptp:62,w:49,h:88,len:110,c:3,p:150,s:"Tin Shed",v:1,wk:17},
+ {b:"Patagonia",n:"Synchilla fleece",t:"knit",l:"L",ptp:64,len:66,c:3,p:90,s:"Second Act"},
+ {b:"Lonely",n:"Silk bias cami",t:"tee",l:"12",ptp:48,len:58,c:4,p:75,s:"Nine Lives"},
+ {b:"Kowtow",n:"Wide leg denim",t:"jeans",l:"30",w:40,ins:80,h:27,c:5,p:140,s:"Kept"},
+ {b:"Zambesi",n:"Silk slip dress",t:"dress",l:"12",ptp:49,w:41,h:46,len:100,c:4,p:260,s:"The Fold"},
+ {b:"Max",n:"Structured blazer",t:"jacket",l:"10",ptp:48,len:64,c:3,p:60,s:"Second Act",wk:22},
+ {b:"Nike",n:"Cropped jersey tee",t:"tee",l:"S",ptp:44,len:48,c:4,p:45,s:"Second Act"},
+ {b:"Juliette Hogan",n:"Silk shell top",t:"shirt",l:"10",ptp:47,len:58,c:5,p:150,s:"Sunday Best"},
+ {b:"Kate Sylvester",n:"Tailored wool coat",t:"coat",l:"L",ptp:50,len:94,c:4,p:280,s:"The Fold"},
+ {b:"Levi's",n:"505 vintage, dark",t:"jeans",l:"28",w:37,ins:72,h:20,c:3,p:70,s:"Tin Shed",v:1,wk:14},
+ {b:"Twenty-seven Names",n:"Mohair knit",t:"knit",l:"XS",ptp:46,len:56,c:4,p:110,s:"Nine Lives"},
+ {b:"Ruby",n:"Cotton shirt dress",t:"dress",l:"10",ptp:46,w:38,h:62,len:94,c:4,p:130,s:"Sunday Best"},
+ {b:"Karen Walker",n:"Tapered wool trouser",t:"trousers",l:"10",w:38,ins:80,h:16,c:4,p:125,s:"Second Act"},
+ {b:"Unbranded",n:"1980s silk blouse",t:"shirt",l:"L",ptp:50,len:62,c:3,p:55,s:"Tin Shed",v:1,wk:19},
+ {b:"Comme des Garçons",n:"Wool wrap skirt",t:"skirt",l:"S",w:38,h:52,len:72,c:4,p:240,s:"The Fold"},
+ {b:"Nom*d",n:"Shrunken jersey top",t:"tee",l:"XS",ptp:45,len:52,c:4,p:80,s:"Nine Lives"},
+ {b:"Penny Sage",n:"Wool pleat trouser",t:"trousers",l:"12",w:40,ins:75,h:23,c:5,p:150,s:"Sunday Best"},
+ {b:"Storm",n:"Knitted vest",t:"knit",l:"XS",ptp:46,len:54,c:4,p:50,s:"Second Act",wk:13},
+ {b:"Patagonia",n:"Quandary hiking pant",t:"trousers",l:"S",w:39,ins:74,h:18,c:3,p:75,s:"Second Act",wk:12},
+ {b:"Issey Miyake",n:"Pleated wide trouser",t:"trousers",l:"2",w:41,ins:84,h:29,c:4,p:290,s:"Tin Shed"},
+ {b:"Standard Issue",n:"Merino knit dress",t:"dress",l:"S",ptp:50,w:40,h:44,len:92,c:4,p:120,s:"Kept"},
+ {b:"Harman Grubiša",n:"Wool mini skirt",t:"skirt",l:"8",w:36,h:40,len:44,c:5,p:140,s:"The Fold"},
+ {b:"Zambesi",n:"Boiled wool jacket",t:"jacket",l:"XS",ptp:49,len:62,c:4,p:210,s:"The Fold"},
+ {b:"Levi's",n:"Type III denim jacket",t:"jacket",l:"M",ptp:56,len:60,c:3,p:130,s:"Tin Shed",v:1},
+ {b:"Unbranded",n:"1970s wool jacket",t:"jacket",l:"16",ptp:49,len:64,c:3,p:65,s:"Tin Shed",v:1,wk:21},
+ {b:"Stüssy",n:"Heavyweight logo tee",t:"tee",l:"L",ptp:57,len:72,c:4,p:75,s:"Second Act"},
+ {b:"Carhartt WIP",n:"Detroit jacket",t:"jacket",l:"M",ptp:60,len:66,c:3,p:195,s:"Tin Shed"},
+ {b:"Barbour",n:"Waxed Bedale",t:"jacket",l:"L",ptp:62,len:72,c:3,p:240,s:"Kept",v:1},
+ {b:"Nom*d",n:"Cotton work shirt",t:"shirt",l:"L",ptp:59,len:76,c:4,p:120,s:"The Fold"},
+ {b:"Dickies",n:"874 work pant",t:"trousers",l:"34",w:45,ins:78,h:19,c:3,p:55,s:"Second Act",wk:12},
+ {b:"Arc'teryx",n:"Gamma softshell",t:"jacket",l:"M",ptp:58,len:70,c:4,p:210,s:"Kept"},
+ {b:"Levi's",n:"Sherpa trucker",t:"jacket",l:"L",ptp:60,len:62,c:3,p:110,s:"Tin Shed",v:1},
+ {b:"Swanndri",n:"Wool bush shirt",t:"shirt",l:"XL",ptp:66,len:78,c:3,p:95,s:"Tin Shed",v:1,wk:20},
+ {b:"Country Road",n:"Cotton chino",t:"trousers",l:"32",w:43,ins:80,h:18,c:4,p:60,s:"Second Act"},
+ {b:"Nike",n:"Vintage fleece crew",t:"knit",l:"L",ptp:61,len:68,c:3,p:65,s:"Second Act",v:1,wk:16},
+ {b:"Huffer",n:"Heavy cotton hoodie",t:"knit",l:"M",ptp:58,len:68,c:4,p:70,s:"Nine Lives"},
+ {b:"Levi's",n:"514 straight, raw",t:"jeans",l:"33",w:44,ins:81,h:20,c:4,p:85,s:"Tin Shed"}
+];
+
+/* ============================================================
+   REFERENCE TABLE. The dense backing file. What a known style is
+   supposed to measure, plus how it actually wears. Matching a
+   listing to a row here pre-fills the seller's form and flags
+   anything that disagrees. Pure lookup, no model.
+   ============================================================ */
+var REF={
+ "Kowtow|Organic cotton boxy tee":{s:"AW22",exp:{ptp:55},note:"True to size. Boxy by design, not an error."},
+ "Levi's|501 straight, mid wash":{s:"Pre-2000",exp:{w:41},note:"Rigid denim. Stretches roughly 2cm at the waist with wear."},
+ "Karen Walker|Wool crew knit":{s:"AW21",exp:{ptp:57},note:"True to size."},
+ "Juliette Hogan|Silk midi dress":{s:"SS23",exp:{ptp:55},note:"Cut straight through the hip, no flare."},
+ "Country Road|Boxy wool blazer":{s:"AW19",exp:{ptp:62},note:"Runs large. Most buyers size down one."},
+ "Standard Issue|Merino crew":{s:"Core",exp:{ptp:50},note:"True to size. Merino relaxes about 1cm."},
+ "Standard Issue|Merino longline cardigan":{s:"Core",exp:{ptp:63},note:"Designed oversized."},
+ "Patagonia|Synchilla fleece":{s:"2019",exp:{ptp:64},note:"US sizing, runs one size large."},
+ "Nike|Nylon windbreaker":{s:"1990s",exp:{ptp:68},note:"Vintage US sizing. Very roomy."},
+ "Issey Miyake|Pleats Please top":{s:"Archive",exp:{ptp:62},note:"One size. Pleats stretch across a wide range."},
+ "Stüssy|Heavyweight logo tee":{s:"2021",exp:{ptp:57},note:"Boxy, true to size."},
+ "Carhartt WIP|Detroit jacket":{s:"Core",exp:{ptp:60},note:"Sized for layering. Roomy through the body."},
+ "Barbour|Waxed Bedale":{s:"1990s",exp:{ptp:62},note:"Cut to take a jumper underneath."},
+ "Arc'teryx|Gamma softshell":{s:"2020",exp:{ptp:58},note:"Trim athletic fit."},
+ "Levi's|550 relaxed, light wash":{s:"1990s",exp:{w:47},note:"Relaxed through the seat and thigh."},
+ "Levi's|Type III denim jacket":{s:"1980s",exp:{ptp:56},note:"Cropped and close fitting."},
+ "Dickies|874 work pant":{s:"Core",exp:{w:45},note:"True to size. No stretch at all."},
+ "Swanndri|Wool bush shirt":{s:"Vintage",exp:{ptp:66},note:"Traditional cut. Very generous."},
+ "Levi's|514 straight, raw":{s:"Core",exp:{w:44},note:"Raw denim. Expect about 2cm of stretch."},
+ "Kowtow|Wide leg denim":{s:"SS22",exp:{w:40},note:"True to size."},
+ "Ruby|Wool A-line skirt":{s:"AW20",exp:{w:45},note:"True to size."},
+ "Nom*d|Felted wool coat":{s:"AW18",exp:{ptp:60},note:"Oversized by design."},
+ "Levi's|Sherpa trucker":{s:"1990s",exp:{ptp:58},note:"Lined, so it wears smaller than it measures."},
+ "Huffer|Heavy cotton hoodie":{s:"Core",exp:{ptp:58},note:"True to size."},
+ "Nike|Vintage fleece crew":{s:"1990s",exp:{ptp:61},note:"Vintage US sizing, roomy."}
+};
+var REF_TOL=1.5;
+
+var TOL={
+ tee:     {ptp:[-1,7],   ptpC:[-3,11]},
+ shirt:   {ptp:[-1,8],   ptpC:[-3,13]},
+ knit:    {ptp:[-2,9],   ptpC:[-4,14]},
+ jacket:  {ptp:[1,12],   ptpC:[-2,17]},
+ coat:    {ptp:[3,16],   ptpC:[0,22]},
+ dress:   {ptp:[-1,7],   ptpC:[-3,11], w:[-1,6], wC:[-3,10]},
+ jeans:   {w:[-1,2.5],   wC:[-2.5,5],  ins:[-4,5],  insC:[-7,8]},
+ trousers:{w:[-1,3],     wC:[-3,6],    ins:[-4,6],  insC:[-7,9]},
+ skirt:   {w:[-1,3],     wC:[-3,6]}
+};
+var TYPE_NAME={tee:"top",shirt:"shirt",knit:"knit",jacket:"jacket",coat:"coat",dress:"dress",
+ jeans:"jeans",trousers:"trousers",skirt:"skirt"};
+var BRANDS=[
+ {k:"Kowtow M",ptp:52,w:42,ins:76,l:"14"},
+ {k:"Kowtow L",ptp:56,w:46,ins:76,l:"16"},
+ {k:"Ruby 14",ptp:52,w:43,ins:75,l:"14"},
+ {k:"Ruby 16",ptp:54,w:45,ins:75,l:"16"},
+ {k:"Country Road 12",ptp:51,w:41,ins:77,l:"12"},
+ {k:"Country Road 16",ptp:55,w:45,ins:77,l:"16"},
+ {k:"Standard Issue L",ptp:56,w:44,ins:76,l:"16"},
+ {k:"Levi's 32",ptp:0,w:43,ins:76,l:"32"},
+ {k:"Levi's 34",ptp:0,w:45.5,ins:76,l:"34"}
+];
+
+var DEFAULT={ptp:54,w:44,ins:76,l:"16",est:{}};
+var EXPIRE_WEEKS=26;   /* six months, then it delists itself back to drafts */
+var WARN_WEEKS=4;      /* last chance badge for the final four */
+var SAVED=load();
+var profile=SAVED||JSON.parse(JSON.stringify(DEFAULT));
+var firstRun=!SAVED;
+var mode="fit", show="fits", tab="garment", sil="any", refOnly=false, pq=null, cart=[];
+
+function load(){try{var r=localStorage.getItem("flipster.fit");return r?JSON.parse(r):null}
+  catch(e){return null}}
+function save(){try{localStorage.setItem("flipster.fit",JSON.stringify(profile))}catch(e){}}
+function key(it){return it.b+"|"+it.n}
+function fmt(n){n=Math.round(n*10)/10;return (n%1===0)?String(n):n.toFixed(1)}
+function inR(v,r){return v>=r[0]&&v<=r[1]}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")}
+
+/* ---------- does it fit: arithmetic against the profile ---------- */
+function judge(it){
+  var t=TOL[it.t]; if(!t) return {verdict:"no",why:"Not measured"};
+  var checks=[],worst=null;
+  if(t.ptp&&it.ptp!=null) checks.push({d:it.ptp-profile.ptp,ok:t.ptp,close:t.ptpC,name:"chest"});
+  if(t.w&&it.w!=null) checks.push({d:it.w-profile.w,ok:t.w,close:t.wC,name:"waist"});
+  if(t.ins&&it.ins!=null) checks.push({d:it.ins-profile.ins,ok:t.ins,close:t.insC,name:"inseam"});
+  if(!checks.length) return {verdict:"no",why:"Not measured"};
+  var allFit=true,allClose=true;
+  for(var i=0;i<checks.length;i++){
+    var c=checks[i];
+    if(!inR(c.d,c.ok)) allFit=false;
+    if(!inR(c.d,c.close)) allClose=false;
+    var over=Math.max(c.ok[0]-c.d, c.d-c.ok[1]);
+    if(worst===null||over>worst.over){c.over=over;worst=c}
+  }
+  if(allFit){
+    var ease=worst.d;
+    var word = ease<=0.5 ? "exactly your size"
+      : (worst.name==="waist"||worst.name==="inseam")
+        ? ("+"+fmt(ease)+"cm on the "+worst.name)
+        : ("+"+fmt(ease)+"cm through the chest"+(ease>=7?", oversized":ease>=4?", relaxed":""));
+    return {verdict:"fits",why:word.charAt(0).toUpperCase()+word.slice(1)};
+  }
+  var gap=worst.ok[0]-worst.d>0 ? fmt(worst.ok[0]-worst.d)+"cm tight"
+                                : fmt(worst.d-worst.ok[1])+"cm loose";
+  if(allClose) return {verdict:"close",why:"Runs "+gap+" in the "+worst.name};
+  return {verdict:"no",why:worst.name.charAt(0).toUpperCase()+worst.name.slice(1)+" is "+gap};
+}
+
+/* ---------- what a plain label-size filter would show ---------- */
+function labelMatch(it){
+  var mine=profile.l, letters={"8":"XS","10":"XS","12":"S","14":"M","16":"L","18":"XL","20":"XL"};
+  var set=[mine, letters[mine]||""];
+  if(mine==="16") set.push("32");
+  if(mine==="18"||mine==="20") set.push("34");
+  if(mine==="12"||mine==="14") set.push("30");
+  return set.indexOf(it.l)>-1;
+}
+
+/* ---------- what shape is it: hem against waist ---------- */
+function silhouette(it){
+  if(it.h==null) return null;
+  if(it.t==="dress"||it.t==="skirt"){
+    var r=it.h/it.w;
+    if(r<1.15) return "Straight";
+    if(r<1.6)  return "Soft A-line";
+    if(r<2.2)  return "A-line";
+    return "Full";
+  }
+  if(it.t==="jeans"||it.t==="trousers"){
+    if(it.h<=16.5) return "Tapered";
+    if(it.h<=21.5) return "Straight";
+    if(it.h<=26.5) return "Wide";
+    return "Extra wide";
+  }
+  return null;
+}
+var SIL_SET=["any","Straight","Soft A-line","A-line","Full","Tapered","Wide","Extra wide"];
+
+/* ---------- reference check ---------- */
+function refCheck(it){
+  var r=REF[key(it)];
+  if(!r) return {state:"none",text:"Measured only, no reference"};
+  var f=null,delta=0;
+  if(r.exp.ptp!=null&&it.ptp!=null){f="pit to pit";delta=it.ptp-r.exp.ptp}
+  else if(r.exp.w!=null&&it.w!=null){f="waist";delta=it.w-r.exp.w}
+  if(f===null) return {state:"none",text:"Measured only, no reference"};
+  if(Math.abs(delta)<=REF_TOL) return {state:"ok",text:"Matches "+r.s+" reference",note:r.note,
+    field:f,delta:delta,ref:r};
+  return {state:"flag",text:fmt(Math.abs(delta))+"cm "+(delta<0?"narrower":"wider")+" than reference",
+    note:r.note,field:f,delta:delta,ref:r};
+}
+
+/* ============================================================
+   SEARCH. Reads plain English and turns it into filters. This is
+   a local parser over the stock, not a model call, so it costs
+   nothing to run and answers instantly.
+   ============================================================ */
+var TYPE_WORDS={
+ tee:["t-shirt","tshirt","tee","cami","singlet"],
+ shirt:["blouse","shirt"],
+ knit:["cardigan","sweater","jumper","fleece","hoodie","knit","vest","merino"],
+ jacket:["blazer","trucker","jacket"],
+ coat:["overcoat","coat"],
+ dress:["dress"],
+ jeans:["denim","jeans"],
+ trousers:["trousers","trouser","chino","chinos","pants","pant"],
+ skirt:["skirt"]
+};
+/* Phrase to silhouettes. Longest phrases first, because the first match wins and
+   the phrase is then removed from the query. "wide leg" deliberately includes
+   Extra wide: nobody asking for wide leg means to exclude the widest ones. */
+var SIL_WORDS={
+ "extra wide":["Extra wide"], "super wide":["Extra wide"],
+ "wide leg":["Wide","Extra wide"], "wide-leg":["Wide","Extra wide"],
+ "wideleg":["Wide","Extra wide"], "wide":["Wide","Extra wide"],
+ "slim leg":["Tapered"], "tapered":["Tapered"], "taper":["Tapered"], "skinny":["Tapered"],
+ "soft a-line":["Soft A-line"],
+ "a-line":["A-line","Soft A-line"], "a line":["A-line","Soft A-line"],
+ "aline":["A-line","Soft A-line"],
+ "fit and flare":["Full"], "flared":["Full"], "flare":["Full"], "tiered":["Full"],
+ "full skirt":["Full"],
+ "straight leg":["Straight"], "straight":["Straight"]
+};
+var STOP=["a","an","the","and","or","for","with","that","some","something","me","my","i","in",
+ "of","to","is","it","nice","good","looking","want","need","find","show","please","under","then"];
+
+/* Fold accents and drop apostrophes on BOTH sides, so "levis" finds "Levi's"
+   and "grubisa" finds "Grubisa". */
+function norm(s){
+  return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+    .replace(/['’]/g,"").replace(/[^a-z0-9$<> -]/g," ").replace(/\s+/g," ");
+}
+
+function parseQuery(raw){
+  var out={price:null,fit:false,vintage:false,types:[],sils:[],words:[],raw:raw};
+  if(!raw||!raw.trim()) return null;
+  var s=" "+norm(raw)+" ";
+
+  var m=s.match(/(?:under|below|less than|up to|max|<)\s*\$?\s*(\d+)/);
+  if(m){out.price=parseInt(m[1],10); s=s.replace(m[0]," ")}
+  else{
+    m=s.match(/\$\s*(\d+)\s*(?:or less|or under)/);
+    if(m){out.price=parseInt(m[1],10); s=s.replace(m[0]," ")}
+  }
+
+  if(/\b(fits? me|my size|my fit|fits? my|in my size)\b/.test(s)){
+    out.fit=true; s=s.replace(/\b(fits? me|my size|my fit|fits? my|in my size)\b/g," ");
+  }
+  if(/\bvintage\b/.test(s)){out.vintage=true; s=s.replace(/\bvintage\b/g," ")}
+
+  Object.keys(SIL_WORDS).forEach(function(phrase){
+    if(s.indexOf(" "+phrase)>-1){
+      SIL_WORDS[phrase].forEach(function(k){ if(out.sils.indexOf(k)<0) out.sils.push(k) });
+      s=s.split(phrase).join(" ");
+    }
+  });
+  Object.keys(TYPE_WORDS).forEach(function(k){
+    TYPE_WORDS[k].forEach(function(wd){
+      if(out.types.indexOf(k)<0 && s.indexOf(" "+wd)>-1){
+        out.types.push(k); s=s.split(wd).join(" ");
+      }
+    });
+  });
+
+  s.split(/\s+/).forEach(function(w){
+    w=w.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g,"");
+    if(w.length>2 && STOP.indexOf(w)<0 && out.words.indexOf(w)<0) out.words.push(w);
+  });
+  return out;
+}
+
+function searchMatch(it,q,silOf){
+  if(!q) return true;
+  if(q.price!=null && it.p>q.price) return false;
+  if(q.vintage && !it.v) return false;
+  if(q.types.length && q.types.indexOf(it.t)<0) return false;
+  if(q.sils.length && q.sils.indexOf(silOf)<0) return false;
+  if(q.words.length){
+    var hay=norm(it.b+" "+it.n+" "+it.s+" "+TYPE_NAME[it.t]+" "+(it.v?"vintage":""));
+    for(var i=0;i<q.words.length;i++){ if(hay.indexOf(q.words[i])<0) return false }
+  }
+  return true;
+}
+
+function queryChips(q,n){
+  if(!q) return "";
+  var c=[];
+  q.types.forEach(function(t){c.push('<span class="qchip">'+TYPE_NAME[t]+'</span>')});
+  q.sils.forEach(function(s){c.push('<span class="qchip">'+s+'</span>')});
+  if(q.vintage) c.push('<span class="qchip">vintage</span>');
+  if(q.price!=null) c.push('<span class="qchip">under $'+q.price+'</span>');
+  if(q.fit) c.push('<span class="qchip pinkk">only what fits you</span>');
+  q.words.forEach(function(w){c.push('<span class="qchip">&ldquo;'+esc(w)+'&rdquo;</span>')});
+  if(!c.length) c.push('<span class="qchip">everything</span>');
+  return '<span class="qchip pinkk">'+n+' found</span>'+c.join("")+
+    '<button class="qclear" id="qclear">clear</button>';
+}
+
+/* ---------- drawings: soft flat lays ---------- */
+var SHAPES={
+ top:"M34,14 C34,20 60,20 60,14 L70,17 C78,20 86,27 90,34 C91,37 84,46 81,46 C79,46 75,41 74,39 L74,96 C74,99 72,100 69,100 L25,100 C22,100 20,99 20,96 L20,39 C19,41 15,46 13,46 C10,46 3,37 4,34 C8,27 16,20 24,17 Z",
+ knit:"M34,14 C34,20 60,20 60,14 L70,17 C80,21 90,31 94,40 C95,43 86,52 83,51 C80,50 76,44 75,42 L75,98 C75,101 73,102 70,102 L24,102 C21,102 19,101 19,98 L19,42 C18,44 14,50 11,51 C8,52 -1,43 0,40 C4,31 14,21 24,17 Z",
+ outer:"M36,13 L47,30 L50,30 L58,13 L70,17 C79,21 88,29 92,37 C93,40 85,49 82,48 C79,47 76,42 75,40 L75,99 C75,102 73,103 70,103 L54,103 L52,36 L46,36 L44,103 L28,103 C25,103 23,102 23,99 L23,40 C22,42 19,47 16,48 C13,49 5,40 6,37 C10,29 19,21 28,17 Z",
+ dress:"M34,12 C34,18 60,18 60,12 L70,15 C78,18 86,25 90,32 C91,35 84,44 81,44 C79,44 75,39 74,37 L72,52 L82,106 C83,110 80,113 76,113 L18,113 C14,113 11,110 12,106 L22,52 L20,37 C19,39 15,44 13,44 C10,44 3,35 4,32 C8,25 16,18 24,15 Z",
+ pants:"M28,12 C28,10 30,9 32,9 L68,9 C70,9 72,10 72,12 L70,110 C70,113 68,115 65,115 L56,115 C53,115 51,113 51,110 L48,60 L45,110 C45,113 43,115 40,115 L31,115 C28,115 26,113 26,110 Z",
+ skirt:"M28,22 C28,19 30,18 33,18 L67,18 C70,18 72,19 72,22 L86,104 C87,109 83,112 78,112 L22,112 C17,112 13,109 14,104 Z"
+};
+var SHAPE_OF={tee:"top",shirt:"top",knit:"knit",jacket:"outer",coat:"outer",dress:"dress",
+ jeans:"pants",trousers:"pants",skirt:"skirt"};
+var TINT={tee:"--t-tee",shirt:"--t-shirt",knit:"--t-knit",jacket:"--t-jacket",coat:"--t-coat",
+ dress:"--t-dress",jeans:"--t-jeans",trousers:"--t-trousers",skirt:"--t-skirt"};
+
+function schematic(it){
+  var shape=SHAPE_OF[it.t], d=SHAPES[shape], tint="var("+TINT[it.t]+")";
+  var acrossIsPtp = it.ptp!=null;
+  var wide = acrossIsPtp ? it.ptp : it.w;
+  var vert = it.len!=null ? it.len : it.ins;
+  var y = acrossIsPtp ? 33 : (shape==="skirt" ? 26 : 18);
+  var vy1 = 14, vy2 = (shape==="pants") ? 113 : (shape==="dress") ? 111
+            : (shape==="skirt") ? 112 : 100;
+  var vx = 104;
+  function pill(cx,cy,val){
+    var w = String(val).length>3 ? 28 : 23;
+    return '<rect x="'+(cx-w/2)+'" y="'+(cy-8)+'" width="'+w+'" height="16" rx="8" '+
+      'fill="var(--card)" stroke="var(--grape)" stroke-width="1.3"/>'+
+      '<text x="'+cx+'" y="'+(cy+3.6)+'" text-anchor="middle" fill="var(--grape-ink)" '+
+      'font-family="Figtree, sans-serif" font-size="10" font-weight="800">'+val+'</text>';
+  }
+  var hemLine="";
+  if(it.h!=null&&(it.t==="dress"||it.t==="skirt")){
+    var hy = (shape==="dress") ? 111 : 112;
+    hemLine='<g stroke="var(--bubble)" stroke-width="2" stroke-linecap="round" fill="none">'+
+      '<line x1="16" y1="'+(hy+6)+'" x2="84" y2="'+(hy+6)+'"/>'+
+      '<line x1="16" y1="'+(hy+2)+'" x2="16" y2="'+(hy+10)+'"/>'+
+      '<line x1="84" y1="'+(hy+2)+'" x2="84" y2="'+(hy+10)+'"/></g>'+
+      '<rect x="37" y="'+(hy-2)+'" width="26" height="16" rx="8" fill="var(--card)" '+
+        'stroke="var(--bubble)" stroke-width="1.3"/>'+
+      '<text x="50" y="'+(hy+9.6)+'" text-anchor="middle" fill="var(--bubble)" '+
+        'font-family="Figtree, sans-serif" font-size="10" font-weight="800">'+it.h+'</text>';
+  }
+  return '<svg viewBox="0 0 126 '+(hemLine?140:128)+'" role="img" '+
+    'aria-label="'+esc(it.n)+' measured flat">'+
+    '<g transform="translate(2,2)">'+
+    '<path d="'+d+'" fill="'+tint+'" stroke="var(--ink-2)" stroke-width="2.2" '+
+      'stroke-linejoin="round" stroke-linecap="round" opacity=".9"/>'+
+    '<g stroke="var(--grape)" stroke-width="2" stroke-linecap="round" fill="none">'+
+      '<line x1="22" y1="'+y+'" x2="72" y2="'+y+'"/>'+
+      '<line x1="22" y1="'+(y-4)+'" x2="22" y2="'+(y+4)+'"/>'+
+      '<line x1="72" y1="'+(y-4)+'" x2="72" y2="'+(y+4)+'"/>'+
+      '<line x1="'+vx+'" y1="'+vy1+'" x2="'+vx+'" y2="'+vy2+'"/>'+
+      '<line x1="'+(vx-4)+'" y1="'+vy1+'" x2="'+(vx+4)+'" y2="'+vy1+'"/>'+
+      '<line x1="'+(vx-4)+'" y1="'+vy2+'" x2="'+(vx+4)+'" y2="'+vy2+'"/>'+
+    '</g>'+
+    pill(47,y-1,wide)+pill(vx,(vy1+vy2)/2,vert)+hemLine+
+    '</g></svg>';
+}
+
+/* ---------- countdown to Sunday 7pm ---------- */
+function nextDrop(){
+  var n=new Date(), d=new Date(n);
+  d.setHours(19,0,0,0);
+  var days=(7-n.getDay())%7;
+  if(days===0&&n.getTime()>d.getTime()) days=7;
+  d.setDate(d.getDate()+days);
+  return d;
+}
+function tick(){
+  var ms=nextDrop().getTime()-Date.now();
+  if(ms<0) ms=0;
+  var m=Math.floor(ms/60000), h=Math.floor(m/60), dd=Math.floor(h/24);
+  var t=dd+"d "+(h%24)+"h "+(m%60)+"m";
+  document.getElementById("cd").textContent=t;
+  document.getElementById("cd2").textContent=t;
+}
+
+/* ---------- render ---------- */
+function render(){
+  var judged=ITEMS.map(function(it,i){
+    var s=silhouette(it);
+    return {i:i,it:it,j:judge(it),lm:labelMatch(it),sil:s,rc:refCheck(it),
+      sm:searchMatch(it,pq,s)};
+  });
+  var fits=judged.filter(function(r){return r.j.verdict==="fits"}).length;
+  var effShow = (pq&&pq.fit) ? "fits" : show;
+
+  var visible=judged.filter(function(r){
+    if(!r.sm) return false;
+    if(refOnly && r.rc.state==="none") return false;
+    if(sil!=="any" && r.sil!==sil) return false;
+    if(mode==="label") return r.lm;
+    if(effShow==="fits") return r.j.verdict==="fits";
+    if(effShow==="close") return r.j.verdict!=="no";
+    return true;
+  });
+
+  document.getElementById("headGood").textContent = fits>0
+    ? fits+" of them are perfect for you."
+    : "Tell us your fit and we will find yours.";
+  document.getElementById("headTotal").textContent=ITEMS.length;
+  document.getElementById("footTotal").textContent=ITEMS.length;
+  document.getElementById("count").innerHTML="<b>"+visible.length+"</b>&nbsp;shown of "+ITEMS.length;
+  document.getElementById("accFitText").textContent=
+    profile.ptp+" / "+profile.w+" / "+profile.ins+" cm";
+
+  document.getElementById("qchips").innerHTML=queryChips(pq,visible.length);
+  var qc=document.getElementById("qclear");
+  if(qc) qc.onclick=function(){document.getElementById("q").value="";pq=null;render()};
+
+  var checked=judged.filter(function(r){return r.rc.state!=="none"}).length;
+  var flagged=judged.filter(function(r){return r.rc.state==="flag"}).length;
+
+  var pf=[["Pit to pit",profile.ptp,profile.est.ptp],["Flat waist",profile.w,profile.est.w],
+    ["Inseam",profile.ins,profile.est.ins],["Label size",profile.l,false]];
+  document.getElementById("prof").innerHTML=
+    '<div class="pf lead"><span>Your fit</span><b>'+fits+' of '+ITEMS.length+'</b></div>'+
+    pf.map(function(p){return '<div class="pf'+(p[2]?" est":"")+'"><span>'+p[0]+
+      (p[2]?" (est)":"")+'</span><b>'+p[1]+'</b></div>'}).join("")+
+    '<div class="pf"><span>Reference checked</span><b>'+checked+'</b></div>'+
+    '<div class="pf"><span>Flagged</span><b>'+flagged+'</b></div>';
+
+  var lm=judged.filter(function(r){return r.lm});
+  var lmBad=lm.filter(function(r){return r.j.verdict==="no"}).length;
+  var missed=judged.filter(function(r){return r.j.verdict==="fits"&&!r.lm}).length;
+  var co=document.getElementById("callout");
+  if(mode==="label"){
+    co.innerHTML="This is a normal label-size filter, the kind every other resale site uses. It "+
+      "shows <b>"+lm.length+"</b> pieces, <b>"+lmBad+"</b> of which will not fit you, and it "+
+      "hides <b>"+missed+"</b> that would. Vintage labels are why: a size 16 from 1975 is close "+
+      "to a modern 10.";
+  }else{
+    co.innerHTML="Measuring instead of trusting the label finds <b>"+fits+"</b> pieces that fit "+
+      "you, against <b>"+lm.length+"</b> from a label-size filter, of which <b>"+lmBad+
+      "</b> would not actually fit. Switch the filter above to compare.";
+  }
+
+  var g=document.getElementById("grid");
+  if(!visible.length){
+    g.innerHTML='<div class="empty">Nothing matches this combination. Try clearing the search, '+
+      'or switch Show to &ldquo;Everything&rdquo;.</div>';
+    return;
+  }
+  var order={fits:0,close:1,no:2};
+  visible.sort(function(a,b){return order[a.j.verdict]-order[b.j.verdict]});
+  g.innerHTML=visible.map(function(r){
+    var it=r.it,j=r.j;
+    var dims=[];
+    if(it.ptp!=null) dims.push("ptp "+it.ptp);
+    if(it.w!=null) dims.push("waist "+it.w);
+    if(it.h!=null) dims.push((it.t==="jeans"||it.t==="trousers"?"leg ":"hem ")+it.h);
+    if(it.len!=null) dims.push("len "+it.len);
+    if(it.ins!=null) dims.push("inseam "+it.ins);
+    var wk=it.wk||1, left=EXPIRE_WEEKS-wk;
+    return '<article class="card'+(j.verdict==="no"?" dim":"")+'">'+
+      '<div class="schem">'+schematic(it)+
+        (r.sil?'<span class="sil">'+r.sil+'</span>':'')+
+        (left<=WARN_WEEKS?'<span class="lastc">Last chance &middot; '+left+'w</span>':'')+'</div>'+
+      '<div class="brandline"><div class="brand">'+esc(it.b)+'</div>'+
+        '<div class="price num">$'+it.p+'</div></div>'+
+      '<p class="desc">'+esc(it.n)+'</p>'+
+      '<div class="meta"><i>Size '+esc(it.l)+'</i><i>'+TYPE_NAME[it.t]+'</i>'+
+        (it.v?'<i>vintage</i>':'')+'<i>cond '+it.c+'/5</i><i>'+esc(it.s)+'</i>'+
+        (wk>=12?'<i>listed '+wk+'w</i>':'')+'</div>'+
+      '<div class="dims">'+dims.join(" &middot; ")+'</div>'+
+      '<div class="refline '+r.rc.state+'"><span class="rd"></span>'+esc(r.rc.text)+'</div>'+
+      '<div class="verdict"><span class="chip '+
+        (j.verdict==="fits"?"yes":j.verdict==="close"?"maybe":"no")+'">'+
+        (j.verdict==="fits"?"Fits you":j.verdict==="close"?"Close":"Not your fit")+'</span>'+
+        '<span class="why">'+esc(j.why)+'</span>'+
+        '<button class="addbtn'+(cart.indexOf(r.i)>-1?" in":"")+'" data-i="'+r.i+'">'+
+          (cart.indexOf(r.i)>-1?"In cart":"Add")+'</button></div>'+
+      '</article>';
+  }).join("");
+}
+
+/* ---------- cart: one of one, so no quantities ---------- */
+function renderCart(){
+  var b=document.getElementById("cartBadge");
+  b.textContent=cart.length; b.hidden = cart.length===0;
+  var body=document.getElementById("cartBody");
+  if(!cart.length){
+    body.innerHTML='<div class="cart-empty">Nothing in here yet.<br>Every piece is one of one, '+
+      'so when it goes it is gone.</div>';
+    return;
+  }
+  var total=0;
+  body.innerHTML=cart.map(function(i){
+    var it=ITEMS[i]; total+=it.p;
+    return '<div class="cart-row">'+
+      '<div class="cart-thumb">'+schematic(it)+'</div>'+
+      '<div class="cart-info"><b>'+esc(it.b)+'</b><span>'+esc(it.n)+'</span></div>'+
+      '<div class="cart-price num">$'+it.p+'</div>'+
+      '<button class="cart-x" data-rm="'+i+'" aria-label="Remove">&times;</button></div>';
+  }).join("")+
+  '<div class="cart-sum"><span>'+cart.length+' piece'+(cart.length>1?"s":"")+
+    '</span><b class="num">$'+total+'</b></div>'+
+  '<button class="btn cart-go">Checkout</button>';
+}
+document.getElementById("cartBody").addEventListener("click",function(e){
+  var x=e.target.closest(".cart-x"); if(!x) return;
+  var i=parseInt(x.getAttribute("data-rm"),10);
+  cart=cart.filter(function(c){return c!==i});
+  renderCart(); render();
+});
+document.getElementById("grid").addEventListener("click",function(e){
+  var a=e.target.closest(".addbtn"); if(!a) return;
+  var i=parseInt(a.getAttribute("data-i"),10);
+  if(cart.indexOf(i)>-1) cart=cart.filter(function(c){return c!==i}); else cart.push(i);
+  renderCart(); render();
+});
+
+/* ---------- controls ---------- */
+function setMode(m){mode=m;
+  document.getElementById("mFit").setAttribute("aria-pressed",m==="fit");
+  document.getElementById("mLabel").setAttribute("aria-pressed",m==="label");
+  render()}
+function setShow(s){show=s;
+  document.getElementById("sFit").setAttribute("aria-pressed",s==="fits");
+  document.getElementById("sClose").setAttribute("aria-pressed",s==="close");
+  document.getElementById("sAll").setAttribute("aria-pressed",s==="all");
+  document.getElementById("optFit").checked = (s==="fits");
+  if(mode==="label")setMode("fit"); else render()}
+document.getElementById("mFit").onclick=function(){setMode("fit")};
+document.getElementById("mLabel").onclick=function(){setMode("label")};
+document.getElementById("sFit").onclick=function(){setShow("fits")};
+document.getElementById("sClose").onclick=function(){setShow("close")};
+document.getElementById("sAll").onclick=function(){setShow("all")};
+
+var sc=document.getElementById("silChips");
+sc.innerHTML=SIL_SET.map(function(s){
+  return '<button class="chipbtn" data-s="'+s+'" aria-pressed="'+(s===sil)+'">'+
+    (s==="any"?"Any shape":s)+'</button>'}).join("");
+sc.addEventListener("click",function(e){
+  var b=e.target.closest(".chipbtn"); if(!b) return;
+  sil=b.getAttribute("data-s");
+  Array.prototype.forEach.call(sc.children,function(c){
+    c.setAttribute("aria-pressed", c.getAttribute("data-s")===sil)});
+  render();
+});
+
+/* ---------- search wiring ---------- */
+var qInput=document.getElementById("q");
+function runSearch(){ pq=parseQuery(qInput.value); render() }
+document.getElementById("qgo").onclick=runSearch;
+qInput.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();runSearch()}});
+/* live, because 60 items is nothing to filter and waiting for a button is friction */
+qInput.addEventListener("input",runSearch);
+
+/* filters disclosure: the dense controls stay out of the way until asked for */
+var filtBtn=document.getElementById("filtBtn"), adv=document.getElementById("adv");
+filtBtn.onclick=function(){
+  var opening=adv.hidden;
+  adv.hidden=!opening;
+  filtBtn.setAttribute("aria-expanded",String(opening));
+  filtBtn.textContent=opening?"Hide filters":"Filters";
+};
+
+/* ---------- popovers ---------- */
+var POPS=[["navBtn","navPop"],["setBtn","setPop"],["cartBtn","cartPop"],["accBtn","accPop"]];
+function closeAll(except){
+  POPS.forEach(function(p){
+    if(p[1]===except) return;
+    document.getElementById(p[1]).hidden=true;
+    document.getElementById(p[0]).setAttribute("aria-expanded","false");
+  });
+}
+POPS.forEach(function(p){
+  var btn=document.getElementById(p[0]), el=document.getElementById(p[1]);
+  btn.onclick=function(e){
+    e.stopPropagation();
+    var open=el.hidden;
+    closeAll(p[1]);
+    el.hidden=!open;
+    btn.setAttribute("aria-expanded",String(open));
+  };
+  el.addEventListener("click",function(e){e.stopPropagation()});
+});
+document.addEventListener("click",function(){closeAll(null)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll(null)});
+
+document.getElementById("optFit").onchange=function(){ setShow(this.checked?"fits":"all") };
+document.getElementById("optRef").onchange=function(){ refOnly=this.checked; render() };
+document.getElementById("navCheck").onclick=function(){
+  closeAll(null);
+  document.getElementById("checker").scrollIntoView({behavior:"smooth",block:"start"});
+};
+
+/* ---------- fit panel ---------- */
+var panel=document.getElementById("panel");
+function openPanel(){
+  closeAll(null);
+  document.getElementById("gPtp").value=profile.ptp;
+  document.getElementById("gWaist").value=profile.w;
+  document.getElementById("gInseam").value=profile.ins;
+  document.getElementById("gLabel").value=profile.l;
+  document.getElementById("yBust").value=Math.round(profile.ptp*2-6);
+  document.getElementById("yWaist").value=Math.round(profile.w*2-2);
+  if(panel.showModal)panel.showModal(); else panel.setAttribute("open","")
+}
+document.getElementById("editFit2").onclick=openPanel;
+document.getElementById("accFit").onclick=openPanel;
+document.getElementById("closeFit").onclick=function(){panel.close()};
+
+var bsel=document.getElementById("bBrand");
+bsel.innerHTML=BRANDS.map(function(b,i){return '<option value="'+i+'">'+b.k+'</option>'}).join("");
+
+function setTab(t){tab=t;
+  [["garment","tGarment","paneGarment"],["brand","tBrand","paneBrand"],
+   ["body","tBody","paneBody"]].forEach(function(x){
+    document.getElementById(x[1]).setAttribute("aria-selected",t===x[0]);
+    document.getElementById(x[2]).hidden = t!==x[0];
+  })}
+document.getElementById("tGarment").onclick=function(){setTab("garment")};
+document.getElementById("tBrand").onclick=function(){setTab("brand")};
+document.getElementById("tBody").onclick=function(){setTab("body")};
+
+document.getElementById("saveFit").onclick=function(){
+  var est={};
+  if(tab==="garment"){
+    var ptp=parseFloat(document.getElementById("gPtp").value);
+    var w=parseFloat(document.getElementById("gWaist").value);
+    var ins=parseFloat(document.getElementById("gInseam").value);
+    if(isNaN(ptp)&&isNaN(w)) return;
+    if(isNaN(ptp)){ptp=w+10;est.ptp=1}
+    if(isNaN(w)){w=ptp-10;est.w=1}
+    if(isNaN(ins)){ins=76;est.ins=1}
+    profile={ptp:ptp,w:w,ins:ins,l:document.getElementById("gLabel").value,est:est};
+  }else if(tab==="brand"){
+    var b=BRANDS[parseInt(bsel.value,10)];
+    var p2={ptp:b.ptp||(b.w+10),w:b.w,ins:b.ins,l:b.l,est:{}};
+    if(!b.ptp)p2.est.ptp=1;
+    profile=p2;
+  }else{
+    var bust=parseFloat(document.getElementById("yBust").value);
+    var yw=parseFloat(document.getElementById("yWaist").value);
+    if(isNaN(bust)&&isNaN(yw)) return;
+    if(isNaN(bust))bust=yw+16;
+    if(isNaN(yw))yw=bust-16;
+    profile={ptp:Math.round((bust/2+3)*2)/2,w:Math.round((yw/2+1)*2)/2,ins:76,
+      l:profile.l,est:{ins:1}};
+  }
+  save(); panel.close(); render();
+};
+
+/* ---------- listing check widget ---------- */
+var CK=[];
+ITEMS.forEach(function(it,i){ if(REF[key(it)]) CK.push(i) });
+var cks=document.getElementById("ckItem");
+cks.innerHTML=CK.map(function(i){
+  return '<option value="'+i+'">'+esc(ITEMS[i].b+" "+ITEMS[i].n)+'</option>'}).join("");
+
+function ckField(it){
+  var r=REF[key(it)];
+  if(r.exp.ptp!=null&&it.ptp!=null) return {name:"pit to pit",exp:r.exp.ptp,actual:it.ptp};
+  return {name:"waist",exp:r.exp.w,actual:it.w};
+}
+function ckRender(resetVal){
+  var it=ITEMS[parseInt(cks.value,10)], r=REF[key(it)], f=ckField(it);
+  document.getElementById("ckValLabel").textContent="Seller measures "+f.name+" (cm)";
+  var inp=document.getElementById("ckVal");
+  if(resetVal) inp.value=f.actual;
+  var v=parseFloat(inp.value);
+  var out=document.getElementById("ckOut");
+  var rows='<div class="ck-row"><span>Matched to</span><b>'+esc(r.s)+' reference</b></div>'+
+    '<div class="ck-row"><span>Expected '+f.name+'</span><b>'+f.exp+'cm</b></div>'+
+    '<div class="ck-row"><span>Seller says</span><b>'+(isNaN(v)?"not yet":fmt(v)+"cm")+'</b></div>';
+  var verdict;
+  if(isNaN(v)){
+    verdict='<div class="ck-verdict flag">Waiting for a measurement. Nothing goes live '+
+      'without one.</div>';
+  }else{
+    var dl=v-f.exp;
+    if(Math.abs(dl)<=REF_TOL){
+      verdict='<div class="ck-verdict ok">Within '+REF_TOL+'cm of the reference. Listing '+
+        'approved, the seller’s number is published.</div>';
+    }else{
+      verdict='<div class="ck-verdict flag">'+fmt(Math.abs(dl))+'cm '+
+        (dl<0?"narrower":"wider")+' than the reference. Held for review: altered, mislabelled, '+
+        'or a typo.</div>';
+    }
+  }
+  out.innerHTML=rows+verdict+'<div class="ck-note"><b>Fit note from the reference:</b> '+
+    esc(r.note)+'</div>';
+}
+cks.onchange=function(){ckRender(true)};
+document.getElementById("ckVal").oninput=function(){ckRender(false)};
+
+/* ---------- go ---------- */
+renderCart(); render(); ckRender(true); tick(); setInterval(tick,30000);
+
+/* First visit: get the fit set before anything else, because every number on the
+   page is wrong until it is. Returning visitors never see this. */
+if(firstRun){
+  document.getElementById("panelTitle").textContent="Welcome. Let's get your fit right.";
+  document.getElementById("panelSub").textContent="This takes about a minute and it is the "+
+    "whole point of the site. Measure something you already own and we will only ever show "+
+    "you things that will actually fit.";
+  document.getElementById("closeFit").textContent="Skip for now";
+  setTimeout(openPanel,450);
+}
+</script>
+</body>
+</html>
