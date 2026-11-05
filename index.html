@@ -1421,7 +1421,10 @@ var SHAPES={
  dress:"M34,12 C34,18 60,18 60,12 L70,15 C78,18 86,25 90,32 C91,35 84,44 81,44 C79,44 75,39 74,37 L72,52 L82,106 C83,110 80,113 76,113 L18,113 C14,113 11,110 12,106 L22,52 L20,37 C19,39 15,44 13,44 C10,44 3,35 4,32 C8,25 16,18 24,15 Z",
  pants:"M28,12 C28,10 30,9 32,9 L68,9 C70,9 72,10 72,12 L70,110 C70,113 68,115 65,115 L56,115 C53,115 51,113 51,110 L48,60 L45,110 C45,113 43,115 40,115 L31,115 C28,115 26,113 26,110 Z",
  skirt:"M28,22 C28,19 30,18 33,18 L67,18 C70,18 72,19 72,22 L86,104 C87,109 83,112 78,112 L22,112 C17,112 13,109 14,104 Z",
- shoe:"M6,82 C6,74 10,68 18,64 L34,56 C42,52 48,46 56,42 C64,38 74,36 82,36 C90,36 94,42 94,52 L94,78 C94,82 92,84 88,84 L12,84 C8,84 6,84 6,82 Z"
+ /* side profile, toe left. The notch between the collar lip and the back of the
+    heel is what makes it read as a shoe rather than a wedge. */
+ shoe:"M14,68 C14,58 20,50 32,46 L52,37 C62,32 71,27 81,25 C87,24 91,27 92,33 C93,38 94,43 95,47 L100,47 C105,47 108,51 108,57 L108,66 C108,70 105,72 101,72 L20,72 C16,72 14,71 14,68 Z",
+ shoeSole:"M14,63 L108,63 L108,66 C108,70 105,72 101,72 L20,72 C16,72 14,71 14,68 Z"
 };
 var SHAPE_OF={tee:"top",shirt:"top",knit:"knit",jacket:"outer",coat:"outer",dress:"dress",
  jeans:"pants",trousers:"pants",skirt:"skirt",shoes:"shoe"};
@@ -1440,25 +1443,26 @@ function dimPill(cx,cy,val,col){
 
 function schematic(it){
   if(it.t==="shoes"){
-    return '<svg viewBox="0 0 126 128" role="img" aria-label="'+esc(it.n)+
+    return '<svg viewBox="0 0 126 112" role="img" aria-label="'+esc(it.n)+
       ' insole measured">'+
-      '<g transform="translate(14,6)">'+
-      '<path d="'+SHAPES.shoe+'" fill="var(--t-shoes)" stroke="var(--ink-2)" stroke-width="2.2" '+
-        'stroke-linejoin="round" stroke-linecap="round" opacity=".9"/>'+
-      '<path d="M8,76 L92,76" stroke="var(--ink-2)" stroke-width="1.8" stroke-linecap="round" '+
-        'opacity=".55"/>'+
-      '<g stroke="var(--ink-2)" stroke-width="1.8" stroke-linecap="round" opacity=".45">'+
-        '<line x1="47" y1="51" x2="57" y2="46"/>'+
-        '<line x1="54" y1="58" x2="64" y2="53"/>'+
-        '<line x1="61" y1="65" x2="71" y2="60"/></g>'+
+      '<path d="'+SHAPES.shoe+'" fill="var(--t-shoes)" stroke="var(--ink-2)" stroke-width="2.4" '+
+        'stroke-linejoin="round" stroke-linecap="round" opacity=".92"/>'+
+      '<path d="'+SHAPES.shoeSole+'" fill="var(--ink-2)" opacity=".16"/>'+
+      '<path d="M14,63 L108,63" stroke="var(--ink-2)" stroke-width="1.8" '+
+        'stroke-linecap="round" opacity=".5"/>'+
+      '<g stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" opacity=".42">'+
+        '<line x1="60" y1="43" x2="68" y2="39"/>'+
+        '<line x1="67" y1="39" x2="75" y2="35"/>'+
+        '<line x1="74" y1="35" x2="82" y2="32"/></g>'+
       '<g stroke="var(--grape)" stroke-width="2" stroke-linecap="round" fill="none">'+
-        '<line x1="6" y1="100" x2="94" y2="100"/>'+
-        '<line x1="6" y1="96" x2="6" y2="104"/>'+
-        '<line x1="94" y1="96" x2="94" y2="104"/></g>'+
-      dimPill(50,99,it.sole)+
-      '<text x="50" y="118" text-anchor="middle" fill="var(--ink-3)" '+
-        'font-family="Figtree, sans-serif" font-size="9" font-weight="800">INSOLE CM</text>'+
-      '</g></svg>';
+        '<line x1="14" y1="88" x2="108" y2="88"/>'+
+        '<line x1="14" y1="84" x2="14" y2="92"/>'+
+        '<line x1="108" y1="84" x2="108" y2="92"/></g>'+
+      dimPill(61,87,it.sole)+
+      '<text x="61" y="104" text-anchor="middle" fill="var(--ink-3)" '+
+        'font-family="Figtree, sans-serif" font-size="9" font-weight="800" '+
+        'letter-spacing="0.6">INSOLE, HEEL TO TOE</text>'+
+      '</svg>';
   }
   return schematicGarment(it);
 }
