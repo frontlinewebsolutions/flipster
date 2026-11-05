@@ -358,6 +358,8 @@ section.band{margin-top:72px;text-align:center}
 .dmrow span{color:var(--ink-2);font-weight:650}
 .dmrow b{font-weight:800;font-variant-numeric:tabular-nums}
 .dmeta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.dmeta i{font-style:normal;background:var(--sunk);border-radius:999px;padding:6px 13px;
+  font-size:12px;font-weight:700;color:var(--ink-2)}
 .dwarn{background:var(--butter-soft);color:var(--butter);border-radius:18px;padding:13px 17px;
   font-size:13px;font-weight:700;margin-bottom:18px;line-height:1.5}
 .dadd{width:100%;justify-content:center;padding:16px;font-size:15.5px}
@@ -1666,34 +1668,36 @@ function viewSpec(it){
   if(it.len!=null) rows.push(["Length",it.len]);
   if(it.ins!=null) rows.push(["Inseam",it.ins]);
   if(it.sole!=null) rows.push(["Insole",it.sole]);
-  var top=150-(rows.length*34)/2+10;
+  /* content stays inside x 40..260 so the carousel arrows never sit on top of it */
   var s='<svg viewBox="0 0 300 300" role="img" aria-label="Measurements">'+
-    '<text x="22" y="36" fill="var(--ink-3)" font-family="Figtree" font-size="11" '+
-    'font-weight="800" letter-spacing="1">MEASURED FLAT, CENTIMETRES</text>';
+    '<text x="40" y="44" fill="var(--ink-3)" font-family="Figtree" font-size="11" '+
+    'font-weight="800" letter-spacing="1">MEASURED FLAT, CENTIMETRES</text>'+
+    '<text x="40" y="84" fill="var(--ink)" font-family="Fredoka" font-size="25" '+
+    'font-weight="600">'+esc(TYPE_NAME[it.t])+', size '+esc(it.l)+'</text>';
   rows.forEach(function(r,i){
-    var y=top+i*34;
-    s+='<text x="22" y="'+y+'" fill="var(--ink-2)" font-family="Figtree" font-size="13.5" '+
+    var y=136+i*32;
+    s+='<text x="40" y="'+y+'" fill="var(--ink-2)" font-family="Figtree" font-size="13.5" '+
        'font-weight="700">'+r[0]+'</text>'+
-       '<line x1="150" y1="'+(y-5)+'" x2="232" y2="'+(y-5)+'" stroke="var(--line-2)" '+
+       '<line x1="160" y1="'+(y-5)+'" x2="214" y2="'+(y-5)+'" stroke="var(--line-2)" '+
        'stroke-width="1.6" stroke-dasharray="2 6" stroke-linecap="round"/>'+
-       '<text x="278" y="'+y+'" text-anchor="end" fill="var(--grape-ink)" '+
+       '<text x="260" y="'+y+'" text-anchor="end" fill="var(--grape-ink)" '+
        'font-family="Figtree" font-size="19" font-weight="800">'+r[1]+'</text>';
   });
   return s+'</svg>';
 }
 function viewCond(it){
-  var lines=wrapText(flawNote(it),30);
+  var lines=wrapText(flawNote(it),26);
   var s='<svg viewBox="0 0 300 300" role="img" aria-label="Condition">'+
-    '<text x="22" y="36" fill="var(--ink-3)" font-family="Figtree" font-size="11" '+
+    '<text x="40" y="44" fill="var(--ink-3)" font-family="Figtree" font-size="11" '+
     'font-weight="800" letter-spacing="1">CONDITION</text>';
   for(var i=0;i<5;i++){
-    s+='<circle cx="'+(34+i*34)+'" cy="104" r="13" fill="'+
+    s+='<circle cx="'+(52+i*34)+'" cy="100" r="13" fill="'+
        (i<it.c?"var(--grape)":"var(--line-2)")+'"/>';
   }
-  s+='<text x="22" y="158" fill="var(--ink)" font-family="Fredoka" font-size="25" '+
+  s+='<text x="40" y="156" fill="var(--ink)" font-family="Fredoka" font-size="25" '+
      'font-weight="600">'+esc(COND_WORD[it.c])+'</text>';
   lines.forEach(function(l,i){
-    s+='<text x="22" y="'+(194+i*24)+'" fill="var(--ink-2)" font-family="Figtree" '+
+    s+='<text x="40" y="'+(196+i*24)+'" fill="var(--ink-2)" font-family="Figtree" '+
        'font-size="14" font-weight="600">'+esc(l)+'</text>';
   });
   return s+'</svg>';
