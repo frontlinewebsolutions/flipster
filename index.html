@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Flipster prototype. A measured secondhand clothing store: fit profile, shape from the hem, local reference check.">
+<meta name="description" content="Flipster prototype. A measured secondhand clothing store.">
 <title>Flipster</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Figtree:wght@300..900&display=swap">
 <style>
@@ -69,7 +69,8 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;
 .word{font-family:var(--display);font-size:27px;font-weight:600;letter-spacing:-.035em;
   line-height:1;background:linear-gradient(170deg,var(--grape-2),var(--grape));
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.spacer{margin-left:auto}
+/* the auto margin lives on the group, never on an item that can be hidden */
+.hright{margin-left:auto;display:flex;align-items:center;gap:11px;flex:none}
 .pill{display:inline-flex;align-items:center;gap:7px;background:var(--card);
   border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:12.5px;
   font-weight:650;color:var(--ink-2);box-shadow:var(--e1);white-space:nowrap}
@@ -171,11 +172,8 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;
 .pop-c{display:block;background:linear-gradient(170deg,var(--bubble-2),var(--bubble));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{color:var(--ink-2);max-width:52ch;margin:18px auto 0;font-size:16.5px}
-.proto-note{font-size:12px;color:var(--ink-3);font-weight:650;margin-top:12px}
-.dropline{display:none;font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:12px}
-.dropline b{color:var(--bubble);font-variant-numeric:tabular-nums}
-
-/* three quiet promises under the search, then straight to the stock */
+/* three quiet promises under the search on desktop. Hidden on phones, where they
+   were just pushing the stock below the fold for no benefit. */
 .reassure{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:34px auto 0;
   max-width:820px}
 .rea{display:flex;align-items:center;gap:11px;text-align:left}
@@ -383,17 +381,18 @@ footer b{color:var(--ink);font-weight:750}
   .reassure{gap:18px;flex-direction:column;align-items:center}
   .rea{width:min(300px,100%)}
   .check{padding:24px 20px;border-radius:30px}
+  .collage{gap:16px}
 }
 @media (max-width:560px){
   .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));
     padding-right:max(16px,env(safe-area-inset-right,0px))}
   .word{font-size:23px}.logomark{width:23px;height:23px}
   .hbar{gap:8px;padding-block:11px}
-  .hbar .pill{display:none}
+  .hright{gap:8px}
   #setBtn{display:none}
+  .reassure{display:none}
   .iconbtn,.avatar{width:38px;height:38px;border-radius:12px}
   .avatar{border-radius:50%}
-  .dropline{display:block}
   .hero{padding-block:30px 6px}
   .hero p{font-size:15.5px;margin-top:14px}
   .searchwrap{margin-top:24px}
@@ -453,8 +452,7 @@ footer b{color:var(--ink);font-weight:750}
       <div class="word">flipster</div>
     </div>
 
-    <span class="pill spacer"><span class="dot"></span>Next drop <b id="cd">&nbsp;</b></span>
-
+    <div class="hright">
     <button class="iconbtn" id="setBtn" aria-expanded="false" aria-label="Settings">
       <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor"
         stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -472,13 +470,14 @@ footer b{color:var(--ink);font-weight:750}
       <span class="badge" id="cartBadge" hidden>0</span>
     </span>
     <button class="avatar" id="accBtn" aria-expanded="false" aria-label="Account">JC</button>
+    </div>
 
     <!-- hamburger panel -->
     <div class="pop left" id="navPop" hidden>
       <div class="pop-group">Browse</div>
-      <button class="pop-item"><span class="gi">&#9733;</span>Tonight&rsquo;s drop
+      <button class="pop-item"><span class="gi">&#9733;</span>New this week
         <span class="tail">60</span></button>
-      <button class="pop-item"><span class="gi">&#8634;</span>Past drops
+      <button class="pop-item"><span class="gi">&#8634;</span>Archive
         <span class="tail">13</span></button>
       <button class="pop-item"><span class="gi">&#9825;</span>Saved pieces
         <span class="tail">7</span></button>
@@ -511,7 +510,7 @@ footer b{color:var(--ink);font-weight:750}
         <input type="checkbox" id="optRef"></label>
       <div class="pop-sep"></div>
       <div class="pop-group">Notifications</div>
-      <label class="tgl"><span>Email me when the drop opens</span>
+      <label class="tgl"><span>Email me when new stock lands</span>
         <input type="checkbox" checked></label>
       <label class="tgl"><span>Tell me when my size lands</span>
         <input type="checkbox" checked></label>
@@ -554,8 +553,6 @@ footer b{color:var(--ink);font-weight:750}
       <span class="pop-c" id="headGood"></span></h1>
     <p>Every piece is measured flat before it goes live, including the hem, so you know the size
       and the shape before you buy.</p>
-    <div class="dropline">Next drop in <b id="cd2">&nbsp;</b></div>
-    <div class="proto-note">Prototype, sample stock</div>
   </section>
 
   <section class="searchwrap">
@@ -655,16 +652,16 @@ footer b{color:var(--ink);font-weight:750}
               <path d="M140 200h166"/>
             </g>
             <text x="223" y="216" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
-              font-size="11" font-weight="800">that is the whole drop</text>
+              font-size="11" font-weight="800">that is the whole store</text>
           </svg>
         </div>
         <div class="ctext">
           <span class="cstep">1</span>
           <span class="cq">&ldquo;You scroll for hours.&rdquo;</span>
-          <h3>A drop, not a feed</h3>
-          <p>Sixty pieces on Sunday, then it closes. You can finish it in ten minutes. The cap is
-            also what stops us lowering the bar to grow, which is how every other marketplace
-            ends up full of junk.</p>
+          <h3>A store you can finish</h3>
+          <p>A capped number of pieces at any one time, so you can see all of it in ten minutes
+            and know you have not missed anything. The cap is also what stops us lowering the bar
+            to grow, which is how every other marketplace ends up full of junk.</p>
         </div>
       </div>
 
@@ -689,7 +686,7 @@ footer b{color:var(--ink);font-weight:750}
               <path d="M244 98l28 28"/><path d="M272 98l-28 28"/>
             </g>
             <text x="258" y="212" text-anchor="middle" fill="var(--bubble)" font-family="Figtree"
-              font-size="11.5" font-weight="800">not in the drop</text>
+              font-size="11.5" font-weight="800">not in the store</text>
           </svg>
         </div>
         <div class="ctext">
@@ -980,7 +977,7 @@ footer b{color:var(--ink);font-weight:750}
     </div>
 
     <div class="panel-acts">
-      <button class="btn" type="button" id="saveFit">Save and filter the drop</button>
+      <button class="btn" type="button" id="saveFit">Save and show what fits</button>
       <button class="btn ghost" type="button" id="closeFit">Cancel</button>
     </div>
   </form>
@@ -1373,24 +1370,6 @@ function schematic(it){
     '</g></svg>';
 }
 
-/* ---------- countdown to Sunday 7pm ---------- */
-function nextDrop(){
-  var n=new Date(), d=new Date(n);
-  d.setHours(19,0,0,0);
-  var days=(7-n.getDay())%7;
-  if(days===0&&n.getTime()>d.getTime()) days=7;
-  d.setDate(d.getDate()+days);
-  return d;
-}
-function tick(){
-  var ms=nextDrop().getTime()-Date.now();
-  if(ms<0) ms=0;
-  var m=Math.floor(ms/60000), h=Math.floor(m/60), dd=Math.floor(h/24);
-  var t=dd+"d "+(h%24)+"h "+(m%60)+"m";
-  document.getElementById("cd").textContent=t;
-  document.getElementById("cd2").textContent=t;
-}
-
 /* ---------- render ---------- */
 function render(){
   var judged=ITEMS.map(function(it,i){
@@ -1703,7 +1682,7 @@ cks.onchange=function(){ckRender(true)};
 document.getElementById("ckVal").oninput=function(){ckRender(false)};
 
 /* ---------- go ---------- */
-renderCart(); render(); ckRender(true); tick(); setInterval(tick,30000);
+renderCart(); render(); ckRender(true);
 
 /* First visit: get the fit set before anything else, because every number on the
    page is wrong until it is. Returning visitors never see this. */
